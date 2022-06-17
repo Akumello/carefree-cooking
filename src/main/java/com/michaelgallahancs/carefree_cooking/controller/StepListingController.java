@@ -11,8 +11,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/step/listing")
-public class StepListingController {
-
+public class StepListingController
+{
     @Autowired
     private StepListingService stepListingService;
 

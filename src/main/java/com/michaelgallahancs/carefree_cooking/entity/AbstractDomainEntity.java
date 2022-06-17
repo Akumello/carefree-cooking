@@ -15,8 +15,8 @@ import javax.persistence.MappedSuperclass;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AbstractDomainEntity {
-
+public class AbstractDomainEntity
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
