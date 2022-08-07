@@ -7,10 +7,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -22,6 +21,15 @@ public class Step extends AbstractDomainEntity
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "recipe_id", referencedColumnName = "id", nullable = false)
     private Recipe recipe;
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "step_ingredient",
+            joinColumns = @JoinColumn(name = "step_id"),
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
+    )
+    private List<Ingredient> ingredients = new ArrayList<>();
 
     private int step_number;
     private String instruction;

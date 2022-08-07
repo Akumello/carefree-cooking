@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
-public class RecipeSaveService {
-
+public class RecipeSaveService
+{
     @Autowired
     private RecipeRepository recipeRepository;
 
@@ -22,7 +22,7 @@ public class RecipeSaveService {
         return recipeRepository.save(recipe);
     }
 
-    public Recipe saveIngredientToRecipe(Long recipeId, Long ingredientId)
+    public Recipe saveIngredientToRecipe(Long recipeId, Long ingredientId, Long amount)
     {
         Recipe recipe = recipeRepository.findById(recipeId).get();
         Ingredient ingredient = ingredientRepository.findById(ingredientId).get();
