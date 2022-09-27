@@ -1,10 +1,14 @@
+// Bugs:
+// Edit and delete buttons stack when instruction text takes up two lines
+// Need to adjust edit to only work on one at a time
+
 /***** Data to collect from user *****/
 let recipeName = 'Mexican Rice';
 let ingredientList = ['Jasmine Rice', 'Tomato', 'Onion'];
 let instructionList = ['Blend onion, garlic, tomatoes, salt, and chicken boullion', 'Toast rice in oil over medium heat for about 7 mins until slightly golden.', 'Added blended mixture to toasted rice', 'Bring to a boil. Give one last stir, reduce heat to low, cover with lid and simmer for 15 mins.', 'Fluff rice and let rest for another 10 minutes before serving.'];
 /*************************************/
 
-/***** HTML Elements *****/
+/*********** HTML Elements ***********/
 let recipeNameInput = document.querySelector('#recipe-name');
 
 let ingredientListElem = document.querySelector('#ingredient-list');
@@ -14,7 +18,7 @@ let addIngredientButton = document.querySelector('#add-ingredient-button');
 let instructionListElem = document.querySelector('#instruction-list');
 let addInstructionTextArea = document.querySelector('#add-instruction-input');
 let addInstructionButton = document.querySelector('#add-instruction-button');
-/*************************/
+/*************************************/
 
 // Generate html li element for the list
 function createListItem(text, id, isBulleted)
@@ -55,7 +59,6 @@ function updateListElement(list, listHtmlElem)
     while(listHtmlElem.firstChild) {
         listHtmlElem.removeChild(listHtmlElem.firstChild);
     }
-    //*/
 
     let isBulleted = true; // Assume numbered list for new list types
     if(listHtmlElem.id == 'ingredient-list')
@@ -75,6 +78,7 @@ function updateListElement(list, listHtmlElem)
         }
         i++;
     });
+    //*/
 }
 
 function addItem(list, listHtmlElem, textAreaToClear)
@@ -109,6 +113,15 @@ addInstructionTextArea.addEventListener('keyup', e => {
     if(e.keyCode === 13) {
         addItem(instructionList, instructionListElem, addInstructionTextArea);
     }
+});
+
+recipeNameInput.addEventListener('input', e => {
+    recipeName = recipeNameInput.value;
+});
+
+recipeNameInput.addEventListener('keyup', e => {
+    if(e.keyCode === 13)
+        recipeNameInput.blur();
 });
 
 function deleteItem(clicked, list, listHtmlElem)
@@ -182,7 +195,7 @@ instructionListElem.addEventListener('click', e =>
 
     // Save button
     if(e.target.classList.contains('fa-save'))
-    saveItem(e.target, instructionList, instructionListElem);
+        saveItem(e.target, instructionList, instructionListElem);
 
     // Edit button
     if(e.target.classList.contains('fa-edit'))
