@@ -3,7 +3,7 @@
 // Need to adjust edit to only work on one at a time
 
 /***** Data to collect from user *****/
-let recipeName = 'Mexican Rice';
+let recipeName;// = 'Mexican Rice';
 let category = 'Mexican';
 let version = '1.0';
 let ingredientList = ['Jasmine Rice', 'Tomato', 'Onion'];
@@ -20,6 +20,8 @@ let addIngredientButton = document.querySelector('#add-ingredient-button');
 let instructionListElem = document.querySelector('#instruction-list');
 let addInstructionTextArea = document.querySelector('#add-instruction-input');
 let addInstructionButton = document.querySelector('#add-instruction-button');
+
+let saveButton = document.querySelector('#save-button');
 /*************************************/
 
 // Generate html li element for the list
@@ -118,9 +120,17 @@ addInstructionTextArea.addEventListener('keyup', e => {
 });
 
 recipeNameInput.addEventListener('input', e => {
+    if(recipeNameInput.classList.contains('border-danger'))
+    {
+        recipeNameInput.classList.remove('border-danger');
+        recipeNameInput.classList.remove('border-2');
+        recipeNameInput.classList.add('border-primary');
+    }
+    
     recipeName = recipeNameInput.value;
 });
 
+// Remove focus from the recipe name input when enter is pressed
 recipeNameInput.addEventListener('keyup', e => {
     if(e.keyCode === 13)
         recipeNameInput.blur();
@@ -202,6 +212,24 @@ instructionListElem.addEventListener('click', e =>
     // Edit button
     if(e.target.classList.contains('fa-edit'))
         editItem(e.target, instructionList, instructionListElem);
+});
+
+saveButton.addEventListener('click', e => 
+{
+    // Check for title
+    if(recipeName)
+        console.log('we have a recipe name');
+    else
+    {
+        recipeNameInput.classList.remove('border-primary');
+        recipeNameInput.classList.add('border-danger');
+        recipeNameInput.classList.add('border-2');
+    }
+
+    // check for at least one ingredient
+    // check for at least on instruction
+    // make json
+    // send request
 });
 
 function generateJSON()
