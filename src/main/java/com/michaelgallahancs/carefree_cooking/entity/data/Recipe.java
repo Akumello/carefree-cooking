@@ -23,7 +23,6 @@ public class Recipe extends AbstractDomainEntity
     private String name;
     private String category;
     private String version;
-    private boolean active;
 
     @JsonIgnore
     @ManyToMany

@@ -11,6 +11,13 @@ body
   max-width: 75%;
 }
 
+#recipe-name
+{
+    border: 0; 
+    font-size: xx-large;
+    size: 80;
+}
+
 
 /* Will Implement
 

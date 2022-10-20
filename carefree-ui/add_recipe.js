@@ -4,6 +4,8 @@
 
 /***** Data to collect from user *****/
 let recipeName = 'Mexican Rice';
+let category = 'Mexican';
+let version = '1.0';
 let ingredientList = ['Jasmine Rice', 'Tomato', 'Onion'];
 let instructionList = ['Blend onion, garlic, tomatoes, salt, and chicken boullion', 'Toast rice in oil over medium heat for about 7 mins until slightly golden.', 'Added blended mixture to toasted rice', 'Bring to a boil. Give one last stir, reduce heat to low, cover with lid and simmer for 15 mins.', 'Fluff rice and let rest for another 10 minutes before serving.'];
 /*************************************/
@@ -204,8 +206,11 @@ instructionListElem.addEventListener('click', e =>
 
 function generateJSON()
 {
-    return JSON.stringify({ "name": name.value, "email": email.value });
+    let json = JSON.stringify({'name': recipeName, 'category': category, 'version': version});
+    console.log(json);
+    return json;
 }
 
 updateListElement(ingredientList, ingredientListElem);
 updateListElement(instructionList, instructionListElem);
+generateJSON();
