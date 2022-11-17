@@ -1,5 +1,6 @@
 package com.michaelgallahancs.carefree_cooking.controller;
 
+import com.michaelgallahancs.carefree_cooking.data.RecipeWrapper;
 import com.michaelgallahancs.carefree_cooking.entity.data.Ingredient;
 import com.michaelgallahancs.carefree_cooking.entity.data.Recipe;
 import com.michaelgallahancs.carefree_cooking.service.recipe.RecipeSaveService;
@@ -20,11 +21,18 @@ public class RecipeSaveController {
         return recipeSaveService.save(recipe);
     }
 
+    @PostMapping(value = "/saveAll")
+    public RecipeWrapper saveRecipe(@RequestBody RecipeWrapper recipe)
+    {
+        System.out.println(recipe.getIngredients());
+        return recipe;
+    }
+
     @PutMapping(value = "/{recipeId}/ingredient/{ingredientId}/amount/{amount}")
     public Recipe saveIngredientToRecipe(@PathVariable Long recipeId,
                                          @PathVariable Long ingredientId,
                                          @PathVariable Long amount
     ) {
-        return recipeSaveService.saveIngredientToRecipe(recipeId, ingredientId, amount);
+        return recipeSaveService.saveIngredientToRecipe(recipeId, ingredientId);
     }
 }

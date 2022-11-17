@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
+
 @Service
 public class RecipeSaveService
 {
@@ -22,12 +24,21 @@ public class RecipeSaveService
         return recipeRepository.save(recipe);
     }
 
-    public Recipe saveIngredientToRecipe(Long recipeId, Long ingredientId, Long amount)
+    public Recipe saveIngredientToRecipe(Long recipeId, Long ingredientId)
     {
         Recipe recipe = recipeRepository.findById(recipeId).get();
         Ingredient ingredient = ingredientRepository.findById(ingredientId).get();
 
         recipe.addIngredient(ingredient);
         return recipeRepository.save(recipe);
+    }
+
+    public Recipe saveIngredientsToRecipe(Long recipeId, List<String> ingredients)
+    {
+        ingredients.forEach( (ingredient) -> {
+                //saveIngredientToRecipe(recipeId, );
+            }
+        );
+        return null;
     }
 }

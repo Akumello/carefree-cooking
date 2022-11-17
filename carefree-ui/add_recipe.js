@@ -3,7 +3,7 @@
 // Need to adjust edit to only work on one at a time
 
 /***** Data to collect from user *****/
-let recipeName;// = 'Mexican Rice';
+let recipeName = 'Mexican Rice';
 let category = 'Mexican';
 let version = '1.0';
 let ingredientList = ['Jasmine Rice', 'Tomato', 'Onion'];
@@ -85,11 +85,23 @@ function updateListElement(list, listHtmlElem)
     //*/
 }
 
+function removeRedBorder(htmlElem)
+{
+    if(htmlElem.classList.contains('border-danger'))
+    {
+        htmlElem.classList.remove('border-danger');
+        htmlElem.classList.remove('border-2');
+        htmlElem.classList.add('border-primary');
+    }
+}
+
 function addItem(list, listHtmlElem, textAreaToClear)
 {
     // Skip if user entered nothing
     const item = textAreaToClear.value;
     if(!item) { return; }
+
+    removeRedBorder(textAreaToClear);
 
     textAreaToClear.value = '';
     list.push(item);
@@ -126,7 +138,7 @@ recipeNameInput.addEventListener('input', e => {
         recipeNameInput.classList.remove('border-2');
         recipeNameInput.classList.add('border-primary');
     }
-    
+
     recipeName = recipeNameInput.value;
 });
 
@@ -216,26 +228,67 @@ instructionListElem.addEventListener('click', e =>
 
 saveButton.addEventListener('click', e => 
 {
-    // Check for title
-    if(recipeName)
-        console.log('we have a recipe name');
-    else
+    let infoMissing = false;
+
+    // Check for recipe name
+    if (!recipeName)
     {
         recipeNameInput.classList.remove('border-primary');
         recipeNameInput.classList.add('border-danger');
         recipeNameInput.classList.add('border-2');
+        infoMissing = true;
     }
 
-    // check for at least one ingredient
-    // check for at least on instruction
-    // make json
+    // Check for at least one ingredient
+    if (ingredientList.length == 0)
+    {
+        addIngredientTextArea.classList.remove('border-primary');
+        addIngredientTextArea.classList.add('border-danger');
+        addIngredientTextArea.classList.add('border-2');
+        infoMissing = true;
+    }
+
+    // Check for at least one instruction
+    if (instructionList.length == 0)
+    {
+        addInstructionTextArea.classList.remove('border-primary');
+        addInstructionTextArea.classList.add('border-danger');
+        addInstructionTextArea.classList.add('border-2');
+        infoMissing = 0;
+    }
+
+    // cancel operation if the user is missing required data
+    if(infoMissing)
+        return;
+
+    // Make json
+    let json = generateJSON();
+
     // send request
+    let resourceUrl = `http://localhost:8080/step/listing/all`;
+    let GetStepInstructions = async () =>
+    {
+        let response = await fetch(resourceUrl); 
+        let data = await response.json();
+        console.log(data);
+    }
+    GetStepInstructions();
+
 });
 
 function generateJSON()
 {
-    let json = JSON.stringify({'name': recipeName, 'category': category, 'version': version});
-    console.log(json);
+    let json = JSON.stringify
+    (
+        {
+            'name': recipeName, 
+            'category': category, 
+            'version': version,
+            'ingredients': ingredientList,
+            'instructions': instructionList
+        }
+    );
+
     return json;
 }
 
