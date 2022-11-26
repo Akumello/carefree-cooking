@@ -21,6 +21,7 @@ public class RecipeSaveController {
         return recipeSaveService.save(recipe);
     }
 
+    @CrossOrigin
     @PostMapping(value = "/saveAll")
     public RecipeWrapper saveRecipe(@RequestBody RecipeWrapper recipe)
     {

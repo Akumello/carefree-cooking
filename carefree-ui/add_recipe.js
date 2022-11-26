@@ -265,16 +265,28 @@ saveButton.addEventListener('click', e =>
     let json = generateJSON();
 
     // send request
-    let resourceUrl = `http://localhost:8080/step/listing/all`;
+    let resourceUrl = `http://localhost:8080/recipe/saveAll`;
+
+
+});
+
+function sendRecipe()
+{
     let GetStepInstructions = async () =>
     {
-        let response = await fetch(resourceUrl); 
+        let response = await fetch(resourceUrl, 
+        { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: json
+        }); 
         let data = await response.json();
         console.log(data);
     }
     GetStepInstructions();
-
-});
+}
 
 function generateJSON()
 {
