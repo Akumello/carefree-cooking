@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.michaelgallahancs.carefree_cooking.entity.data.Ingredient;
 import com.michaelgallahancs.carefree_cooking.entity.data.Recipe;
+import com.michaelgallahancs.carefree_cooking.entity.data.Step;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -25,6 +27,29 @@ import com.michaelgallahancs.carefree_cooking.entity.data.Recipe;
 public class RecipeWrapper
 {
     private Recipe recipe;
+    public Recipe getRecipe(){
+        if(recipe != null)
+            return recipe;
+
+        recipe = new Recipe();
+        recipe.setName(name);
+        recipe.setCategory(category);
+        recipe.setVersion(version);
+
+
+        instructions.forEach(instruction -> {
+            instruction.setRecipe(recipe);
+        });
+        System.out.println("--- INGREDIENTS ---\n" + ingredients);
+
+//        ingredients.forEach(ingredient -> {
+//            ingredient.getRecipes().add(recipe); // Many to many
+//        });
+//
+//        recipe.setIngredients(ingredients);
+
+        return recipe;
+    }
 
     @JsonProperty("name")
     private String name;
@@ -33,9 +58,9 @@ public class RecipeWrapper
     @JsonProperty("version")
     private String version;
     @JsonProperty("ingredients")
-    private List<String> ingredients = null;
+    private List<Ingredient> ingredients = null;
     @JsonProperty("instructions")
-    private List<String> instructions = null;
+    private List<Step> instructions = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -70,22 +95,22 @@ public class RecipeWrapper
     }
 
     @JsonProperty("ingredients")
-    public List<String> getIngredients() {
+    public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
     @JsonProperty("ingredients")
-    public void setIngredients(List<String> ingredients) {
+    public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
     @JsonProperty("instructions")
-    public List<String> getInstructions() {
+    public List<Step> getInstructions() {
         return instructions;
     }
 
     @JsonProperty("instructions")
-    public void setInstructions(List<String> instructions) {
+    public void setInstructions(List<Step> instructions) {
         this.instructions = instructions;
     }
 

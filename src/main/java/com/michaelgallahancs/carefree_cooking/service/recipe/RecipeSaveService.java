@@ -36,7 +36,8 @@ public class RecipeSaveService
     public Recipe saveIngredientsToRecipe(Long recipeId, List<String> ingredients)
     {
         ingredients.forEach( (ingredient) -> {
-                //saveIngredientToRecipe(recipeId, );
+                long ingredientId = ingredientRepository.findByName(ingredient).getId();
+                saveIngredientToRecipe(recipeId, ingredientId);
             }
         );
         return null;

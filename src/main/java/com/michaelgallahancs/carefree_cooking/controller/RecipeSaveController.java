@@ -25,7 +25,8 @@ public class RecipeSaveController {
     @PostMapping(value = "/saveAll")
     public RecipeWrapper saveRecipe(@RequestBody RecipeWrapper recipe)
     {
-        System.out.println(recipe.getIngredients());
+        System.out.println(recipe.getRecipe().getIngredients());
+
         return recipe;
     }
 

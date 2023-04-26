@@ -10,6 +10,6 @@ public class ViewController {
     @GetMapping(value = "/", produces = { MediaType.TEXT_HTML_VALUE })
     public String listAllIngredients()
     {
-        return "sample_index.html";
+        return "recipe.html";
     }
 }

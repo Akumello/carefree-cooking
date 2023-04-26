@@ -74,7 +74,6 @@ function updateListElement(list, listHtmlElem)
     // Display the todo list
     let i = 0;
     list.forEach(item => {
-        console.log(item);
         if(item === newList[0])
         {
             listHtmlElem.appendChild(createListItem(item, `${i}`, isBulleted));
@@ -262,15 +261,16 @@ saveButton.addEventListener('click', e =>
         return;
 
     // Make json
-    let json = generateJSON();
+    let recipeJSON = generateJSON();
+    console.log(recipeJSON);
 
     // send request
     let resourceUrl = `http://localhost:8080/recipe/saveAll`;
-
+    sendRecipe(resourceUrl, recipeJSON);
 
 });
 
-function sendRecipe()
+function sendRecipe(resourceUrl, recipe)
 {
     let GetStepInstructions = async () =>
     {
@@ -280,7 +280,7 @@ function sendRecipe()
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: json
+            body: recipe
         }); 
         let data = await response.json();
         console.log(data);
@@ -296,8 +296,8 @@ function generateJSON()
             'name': recipeName, 
             'category': category, 
             'version': version,
-            'ingredients': ingredientList,
-            'instructions': instructionList
+            'ingredients': ingredientList.map((ingredient,i) => ({name: ingredient})),
+            'instructions': instructionList.map((instruction,i) => ({step_number: i+1, instruction: instruction}))
         }
     );
 

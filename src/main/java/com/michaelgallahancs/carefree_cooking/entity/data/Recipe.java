@@ -26,7 +26,7 @@ public class Recipe extends AbstractDomainEntity
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(
+    @JoinTable (
             name = "recipe_ingredient",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")
