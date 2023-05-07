@@ -14,6 +14,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.michaelgallahancs.carefree_cooking.entity.data.Ingredient;
 import com.michaelgallahancs.carefree_cooking.entity.data.Recipe;
 import com.michaelgallahancs.carefree_cooking.entity.data.Step;
+import com.michaelgallahancs.carefree_cooking.service.recipe.RecipeSaveService;
+import com.michaelgallahancs.carefree_cooking.service.step.StepSaveService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -27,7 +30,14 @@ import com.michaelgallahancs.carefree_cooking.entity.data.Step;
 public class RecipeWrapper
 {
     private Recipe recipe;
-    public Recipe getRecipe(){
+
+    @Autowired
+    private RecipeSaveService saver;
+    @Autowired
+    private StepSaveService stepSaver;
+
+    public Recipe getRecipe()
+    {
         if(recipe != null)
             return recipe;
 
@@ -36,17 +46,13 @@ public class RecipeWrapper
         recipe.setCategory(category);
         recipe.setVersion(version);
 
-
-        instructions.forEach(instruction -> {
-            instruction.setRecipe(recipe);
+        // Add ingredients to the recipe
+        ingredients.forEach(ingredient -> {
+            recipe.addIngredient(ingredient);
         });
-        System.out.println("--- INGREDIENTS ---\n" + ingredients);
 
-//        ingredients.forEach(ingredient -> {
-//            ingredient.getRecipes().add(recipe); // Many to many
-//        });
-//
-//        recipe.setIngredients(ingredients);
+        //Was adding recipe to each instruction, but that needs to be done after the recipe is saved and assigned an id.
+
 
         return recipe;
     }
@@ -104,8 +110,12 @@ public class RecipeWrapper
         this.ingredients = ingredients;
     }
 
+    // A step must have a recipe, so the recipe must be provided
     @JsonProperty("instructions")
-    public List<Step> getInstructions() {
+    public List<Step> getInstructions(Recipe recipe) {
+        instructions.forEach(instruction -> {
+            instruction.setRecipe(recipe);
+        });
         return instructions;
     }
 

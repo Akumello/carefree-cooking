@@ -24,7 +24,7 @@ public class Step extends AbstractDomainEntity
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(
+    @JoinTable (
             name = "step_ingredient",
             joinColumns = @JoinColumn(name = "step_id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id")

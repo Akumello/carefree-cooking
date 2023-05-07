@@ -25,7 +25,7 @@ public class Recipe extends AbstractDomainEntity
     private String version;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable (
             name = "recipe_ingredient",
             joinColumns = @JoinColumn(name = "recipe_id"),
