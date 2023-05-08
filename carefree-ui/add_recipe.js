@@ -60,7 +60,8 @@ function createListItem(text, id, isBulleted)
 function updateListElement(list, listHtmlElem)
 {
     //* Clear the current elements
-    while(listHtmlElem.firstChild) {
+    while(listHtmlElem.firstChild) 
+    {
         listHtmlElem.removeChild(listHtmlElem.firstChild);
     }
 
@@ -73,7 +74,8 @@ function updateListElement(list, listHtmlElem)
     let newList = [...list];
     // Display the todo list
     let i = 0;
-    list.forEach(item => {
+    list.forEach(item => 
+    {
         if(item === newList[0])
         {
             listHtmlElem.appendChild(createListItem(item, `${i}`, isBulleted));
@@ -109,11 +111,13 @@ function addItem(list, listHtmlElem, textAreaToClear)
 
 
 // Run addItem when the add item button is clicked or the user hits enter inside the text area
-addIngredientButton.addEventListener('click', () => {
+addIngredientButton.addEventListener('click', () => 
+{
         addItem(ingredientList, ingredientListElem, addIngredientTextArea)
-    }
-);
-addIngredientTextArea.addEventListener('keyup', e => {
+});
+
+addIngredientTextArea.addEventListener('keyup', e => 
+{
     if(e.keyCode === 13) {
         addItem(ingredientList, ingredientListElem, addIngredientTextArea);
     }

@@ -16,7 +16,7 @@ function MakeButton(id, title)
     let child = document.createElement('div');
     child.setAttribute('class', 'd-flex');
     child.setAttribute('class', 'justify-content-between');
-    child.innerHTML = `<div class="btn btn-outline-secondary mb-2 py-3 px-5 text-right" id="recipe-btn-${id}"><h5>${title}</h5></div><div></div>`;
+    child.innerHTML = `<div class="btn btn-outline-secondary mb-2 py-3 px-5 text-right" id="recipe-btn-${id}"><h5>${id+1}. ${title}</h5></div><div></div>`;
     return child;
 }
 
