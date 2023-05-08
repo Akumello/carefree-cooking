@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Set;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/recipe/listing")
 public class RecipeListingController {
@@ -17,7 +18,7 @@ public class RecipeListingController {
     @Autowired
     private RecipeListingService recipeListingService;
 
-    @CrossOrigin()
+    @CrossOrigin
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<Recipe> listAllRecipe()
     {
