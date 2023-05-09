@@ -1,4 +1,10 @@
 let recipeList = document.querySelector('#recipe-list');
+let addRecipeButton = document.querySelector('#add-recipe-button');
+
+addRecipeButton.addEventListener('click', e => 
+{
+    window.open('add_recipe.html', '_self');
+});
 
 // get list of recipes from backend
 let recipes = requestRecipes(`http://localhost:8080/recipe/listing/all`);
@@ -11,13 +17,12 @@ recipes.then((recipeNames) =>
     console.log(recipeNames)
 });
 
-function MakeButton(id, title)
+function MakeButton(id, recipeName)
 {
-    let child = document.createElement('div');
-    child.setAttribute('class', 'd-flex');
-    child.setAttribute('class', 'justify-content-between');
-    child.innerHTML = `<div class="btn btn-outline-secondary mb-2 py-3 px-5 text-right" id="recipe-btn-${id}"><h5>${id+1}. ${title}</h5></div><div></div>`;
-    return child;
+    // Could also start with a template and access via .content rather than .firstElementChild, but some old browser do not support it
+    let button = document.createElement('div');
+    button.innerHTML = `<button class="btn btn-outline-secondary text-start mb-2 p-3" id="recipe-btn-${id}"><span>${id+1}. ${recipeName}</span></button>`;
+    return button.firstElementChild;
 }
 
 function requestRecipes(resourceUrl)

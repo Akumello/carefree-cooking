@@ -22,6 +22,7 @@ let addInstructionTextArea = document.querySelector('#add-instruction-input');
 let addInstructionButton = document.querySelector('#add-instruction-button');
 
 let saveButton = document.querySelector('#save-button');
+let cancelButton = document.querySelector('#cancel-button');
 /*************************************/
 
 // Generate html li element for the list
@@ -171,17 +172,15 @@ function saveItem(clicked, list, listHtmlElem)
     const index = liElement.id.match(num);
 
     // Remove the item from the todo list
-    let newToDo = liElement.querySelector(`#input-${index}`).value;
-    // extract newToDo from input field
-    list.splice(index, 1, `${newToDo}`);
+    let newListEntry = liElement.querySelector(`#input-${index}`).value;
+    // extract newListEntry from the input field
+    list.splice(index, 1, `${newListEntry}`);
 
     updateListElement(list, listHtmlElem);
 }
 
 function editItem(clicked, list, listHtmlElem)
 {
-
-
     // Switch the sibling div to an input text field and change edit button to a save button
     clicked.classList.add('d-none');
     clicked.nextSibling.classList.remove('d-none');
@@ -189,16 +188,16 @@ function editItem(clicked, list, listHtmlElem)
     clicked.parentNode.parentNode.firstChild.setAttribute('class', 'd-none');
 
     clicked.parentNode.parentNode.firstChild.nextSibling.firstChild.nextSibling.select();
-    clicked.parentNode.parentNode.firstChild.nextSibling.firstChild.nextSibling.addEventListener('keyup', e => {
-            if(e.keyCode === 13) 
-            {
-                saveItem(clicked, list, listHtmlElem);
-            }
+    clicked.parentNode.parentNode.firstChild.nextSibling.firstChild.nextSibling.addEventListener('keyup', e => 
+    {
+        if(e.keyCode === 13) 
+        {
+            saveItem(clicked, list, listHtmlElem);
         }
-    );
+    });
 }
 
-//######## Save, Edit, and Delete button functionality ########
+//######## Save, Edit, and Delete button functionality ########//
 ingredientListElem.addEventListener('click', e => 
 {   
     // Delete button
@@ -257,10 +256,10 @@ saveButton.addEventListener('click', e =>
         addInstructionTextArea.classList.remove('border-primary');
         addInstructionTextArea.classList.add('border-danger');
         addInstructionTextArea.classList.add('border-2');
-        infoMissing = 0;
+        infoMissing = 0; // instructions not a requirement at the moment
     }
 
-    // cancel operation if the user is missing required data
+    // Cancel operation if the user is missing required data
     if(infoMissing)
         return;
 
@@ -268,10 +267,17 @@ saveButton.addEventListener('click', e =>
     let recipeJSON = generateJSON();
     console.log(recipeJSON);
 
-    // send request
+    // Send request
     let resourceUrl = `http://localhost:8080/recipe/saveAll`;
     sendRecipe(resourceUrl, recipeJSON);
 
+    // Go to recipe view on success
+});
+
+cancelButton.addEventListener('click', e => 
+{
+    // Go to recipe menu
+    window.open('/recipe_menu.html', '_self');
 });
 
 function sendRecipe(resourceUrl, recipe)

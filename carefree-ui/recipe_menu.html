@@ -16,16 +16,18 @@
         </header>
         <div class="container-fluid wrapper">
             <div class="p-2"></div>
-
+            <section class="container text-dark px-0 py-3 rounded-top">
+                <div class="p-1 d-flex justify-content-between">
+                    <h3>Select a recipe...</h3>
+                    <button class="btn btn-outline-secondary" id="add-recipe-button">Add a recipe</button>
+                </div>
+            </section>
             <!-- Show Recipes Section -->
-            <section class="container bg-light text-dark border border-secondary p-3 rounded-top rounded-bottom">
+            <section class="container text-dark border border-secondary p-3 rounded-top rounded-bottom">
                 <h3>Recipes</h3>
                 <div class="container mt-3">
                     <ol class="list-group" id="recipe-list">
-                        <!-- <div class="d-flex justify-content-between">
-                            <div class="btn btn-outline-secondary mb-2 py-3 px-5 text-right" id="recipe-btn-id"><h5>Mexican rice</h5></div>
-                            <div></div>
-                        </div> -->
+                        <!-- <button class="btn btn btn-outline-secondary text-start mb-2 p-3" id="recipe-btn-${id}"><span>${id+1} ${recipeName}</span></button> -->
                     </ol>
                 </div>
             </section>
@@ -34,7 +36,7 @@
 
         <!-- Footer -->
         <footer class="bg-light text-dark p-3 text-right">
-            <h5>Powered by Bootstrap 5</h5>
+            <h5>Powered by Spring and Bootstrap 5</h5>
         </footer>
         <script src="get_recipes.js"></script>
     </body>
