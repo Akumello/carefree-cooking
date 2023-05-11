@@ -6,6 +6,28 @@ addRecipeButton.addEventListener('click', e =>
     window.open('add_recipe.html', '_self');
 });
 
+recipeList.addEventListener('click', e => 
+{
+    let clickType = e.target.id.split('-')[0];
+
+    // Need to modify js to use db id in html id
+    let recipeId = e.target.id.split('-')[1];
+
+    if(clickType === 'recipe')
+    {
+        // Open recipe_view.html and send recipe id to it to open
+        window.open('recipe_view.html?recipe=' + encodeURIComponent(recipeId), '_self');
+    } 
+    
+    if(clickType === 'delete')
+    {
+        // Get recipe id
+        // remove from db
+        // refresh page
+        console.log('del');
+    }
+});
+
 // get list of recipes from backend
 let recipes = requestRecipes(`http://localhost:8080/recipe/listing/all`);
 recipes.then((recipeNames) => 
@@ -21,7 +43,7 @@ function MakeButton(id, recipeName)
 {
     // Could also start with a template and access via .content rather than .firstElementChild, but some old browser do not support it
     let button = document.createElement('div');
-    button.innerHTML = `<button class="btn btn-outline-secondary text-start mb-2 p-3" id="recipe-btn-${id}"><span>${id+1}. ${recipeName}</span></button>`;
+    button.innerHTML = `<div class="d-flex"><button class="btn btn btn-outline-primary text-start mb-2 p-3 container-fluid" id="recipe-${id}"><span>${id+1}. ${recipeName}</span></button><button class="btn btn-outline-primary text-start mx-1 mb-2 p-3 fas fa-trash-alt" id="delete-${id}"></button></div>`;
     return button.firstElementChild;
 }
 

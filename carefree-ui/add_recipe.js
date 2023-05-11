@@ -10,6 +10,13 @@ let ingredientList = ['Jasmine Rice', 'Tomato', 'Onion'];
 let instructionList = ['Blend onion, garlic, tomatoes, salt, and chicken boullion', 'Toast rice in oil over medium heat for about 7 mins until slightly golden.', 'Added blended mixture to toasted rice', 'Bring to a boil. Give one last stir, reduce heat to low, cover with lid and simmer for 15 mins.', 'Fluff rice and let rest for another 10 minutes before serving.'];
 /*************************************/
 
+// ^ replace this with below psuedocode
+// get recipe id from url if present and pull its info from db to populate as above
+// if not present use above data in dev, but should be blank in production
+let recipeId = new URLSearchParams(window.location.search).get('recipe');
+console.log(recipeId);
+
+
 /*********** HTML Elements ***********/
 let recipeNameInput = document.querySelector('#recipe-name');
 
