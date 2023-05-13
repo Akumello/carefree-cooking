@@ -43,6 +43,17 @@ if(recipeId)
             });
 
             // ingredints code
+            let ingredients = requestRecipes(`http://localhost:8080/ingredient/listing/${recipeId}`);
+            ingredients.then(ingredients => 
+            {
+                ingredients.forEach(ingredient => 
+                {
+                    ingredientLoadingHtml.classList.add('d-none');
+                    let litem = document.createElement('li');
+                    litem.textContent = ingredient.name;
+                    ingredientListHtml.appendChild(litem);
+                });
+            });
         });
 
     });

@@ -3,9 +3,7 @@ package com.michaelgallahancs.carefree_cooking.controller;
 import com.michaelgallahancs.carefree_cooking.entity.data.Ingredient;
 import com.michaelgallahancs.carefree_cooking.service.ingredient.IngredientListingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,4 +20,10 @@ public class IngredientListingController {
         return ingredientListingService.retrieveAllIngredients();
     }
 
+    @CrossOrigin
+    @RequestMapping(value = "/{recipeId}", method = RequestMethod.GET)
+    public List<Ingredient> listIngredientsByRecipe(@PathVariable Long recipeId)
+    {
+        return ingredientListingService.retrieveIngredients(recipeId);
+    }
 }

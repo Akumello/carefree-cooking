@@ -18,4 +18,9 @@ public class IngredientListingService
     {
         return ingredientRepository.findAll();
     }
+
+    public List<Ingredient> retrieveIngredients(Long recipeId)
+    {
+        return ingredientRepository.findByRecipes_Id(recipeId);
+    }
 }

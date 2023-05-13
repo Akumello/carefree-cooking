@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
+public interface IngredientRepository extends JpaRepository<Ingredient, Long>
+{
     Ingredient findByName(String name);
+
+    List<Ingredient> findByRecipes_Id(Long recipeId);
 }
