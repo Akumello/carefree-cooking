@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -17,5 +18,11 @@ public class RecipeListingService {
     public List<Recipe> retrieveAllRecipes()
     {
         return recipeRepository.findAll();
+    }
+
+    public Recipe retrieveRecipe(Long recipeId)
+    {
+        return recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new EntityNotFoundException(recipeId.toString()));
     }
 }

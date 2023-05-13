@@ -26,7 +26,7 @@
             <!-- Recipe Title-->
             <section>
                 <div class="d-flex justify-content-between">
-                    <h1 class="py-2">Mexican Rice</h1>
+                    <h1 class="py-2" id="recipe-title">loading...</h1>
                     <button class="btn btn-outline-secondary m-3" id="edit-button">Edit</button>
                 </div>
             </section>
@@ -36,10 +36,7 @@
                 <h3>Ingredients</h3>
                 <div class="container m-3">
                     <ol class="list-group" id="ingredient-list">
-                        <li>fdlksjafds;lj</li>
-                        <li>fjdslaj fdsaf agtr bevtr ;lj</li>
-                        <li>inbv4tbiv;lj</li>
-                        <li>iv4b3ruigbi34bvi3bvi3b;lj</li>
+                        <li id="ingredient-loading">loading...</li>
                     </ol>
                 </div>
             </section>
@@ -48,13 +45,8 @@
             <section class="container bg-light text-dark border border-secondary p-3 rounded-top rounded-bottom">
                 <h3>Instructions</h3>
                 <div class="container m-3">
-                    <ol class="list-group" id="instruction-list">
-                        <li>fldjea;lvrjeqo rceo;qnr wgtre yhb teg trg tyg trw r</li>
-                        <li>fldjea;lvrjeqo rceo;qnr wgtre yhb teg trg tyg trw r</li>
-                        <li>fldjea;lvrjeqo rceo;qnr wgtre yhb teg trg tyg trw r</li>
-                        <li>fldjea;lvrjeqo rceo;qnr wgtre yhb teg trg tyg trw r</li>
-                        <li>fldjea;lvrjeqo rceo;qnr wgtre yhb teg trg tyg trw r</li>
-                        <li>fldjea;lvrjeqo rceo;qnr wgtre yhb teg trg tyg trw r</li>
+                    <ol class="list-group" id="step-list">
+                        <li id="step-loading">loading...</li>
                     </ol>
                 </div>
             </section>
@@ -66,6 +58,7 @@
         <footer class="bg-light text-dark p-3 text-right">
             <h5>Powered by Spring and Bootstrap 5</h5>
         </footer>
-        <script src="recipe_view.js"></script>
+        <script src="recipe.js" type="module"></script>
+        <script src="recipe_view.js" type="module"></script>
     </body>
 </html>

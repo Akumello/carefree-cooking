@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class IngredientListingService {
-
+public class IngredientListingService
+{
     @Autowired
     private IngredientRepository ingredientRepository;
 

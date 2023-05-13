@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -17,5 +18,11 @@ public class StepListingService {
     public List<Step> retrieveAllSteps()
     {
         return stepRepository.findAll();
+    }
+
+    public List<Step> retrieveSteps(Long recipeId)
+    {
+        return stepRepository.findAllByRecipe_Id(recipeId);
+                //.orElseThrow(() -> new EntityNotFoundException(recipeId.toString()));
     }
 }

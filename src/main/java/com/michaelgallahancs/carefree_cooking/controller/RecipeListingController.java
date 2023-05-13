@@ -1,19 +1,18 @@
 package com.michaelgallahancs.carefree_cooking.controller;
+import com.michaelgallahancs.carefree_cooking.data.RecipeWrapper;
 import com.michaelgallahancs.carefree_cooking.entity.data.Ingredient;
 import com.michaelgallahancs.carefree_cooking.entity.data.Recipe;
 import com.michaelgallahancs.carefree_cooking.service.recipe.RecipeListingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/recipe/listing")
-public class RecipeListingController {
-
+public class RecipeListingController
+{
     @Autowired
     private RecipeListingService recipeListingService;
 
@@ -22,5 +21,12 @@ public class RecipeListingController {
     public List<Recipe> listAllRecipe()
     {
         return recipeListingService.retrieveAllRecipes();
+    }
+
+    @CrossOrigin()
+    @RequestMapping(value = "/{recipeId}", method = RequestMethod.GET)
+    public Recipe listRecipeById(@PathVariable Long recipeId)
+    {
+        return recipeListingService.retrieveRecipe(recipeId);
     }
 }

@@ -29,21 +29,22 @@ recipeList.addEventListener('click', e =>
 });
 
 // get list of recipes from backend
-let recipes = requestRecipes(`http://localhost:8080/recipe/listing/all`);
-recipes.then((recipeNames) => 
+let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/all`);
+recipeData.then((recipes) => 
 {
-    recipeNames.forEach((recipeName, i) => 
-        {
-            recipeList.appendChild(MakeButton(i, recipeName));
-        });
-    console.log(recipeNames)
+    recipes.forEach((recipe, i) => 
+    {
+        recipeList.appendChild(MakeButton(i, recipe.id, recipe.name));
+    });
+
+    console.log(recipes)
 });
 
-function MakeButton(id, recipeName)
+function MakeButton(index, recipeId, recipeName)
 {
     // Could also start with a template and access via .content rather than .firstElementChild, but some old browser do not support it
     let button = document.createElement('div');
-    button.innerHTML = `<div class="d-flex"><button class="btn btn btn-outline-primary text-start mb-2 p-3 container-fluid" id="recipe-${id}"><span>${id+1}. ${recipeName}</span></button><button class="btn btn-outline-primary text-start mx-1 mb-2 p-3 fas fa-trash-alt" id="delete-${id}"></button></div>`;
+    button.innerHTML = `<div class="d-flex"><button class="btn btn btn-outline-primary text-start mb-2 p-3 container-fluid" id="recipe-${recipeId}"><span>${index+1}. ${recipeName}</span></button><button class="btn btn-outline-primary text-start mx-1 mb-2 p-3 fas fa-trash-alt" id="delete-${recipeId}"></button></div>`;
     return button.firstElementChild;
 }
 
@@ -60,14 +61,14 @@ function requestRecipes(resourceUrl)
         }); 
         let data = await response.json();
         
-        let recipeNames = [data[0].name];
+        let recipes = [data[0]];
         for (let i = 1; i < data.length; i++)
         {
             const recipe = data[i];
-            recipeNames.push(recipe.name);
+            recipes.push(recipe);
         }
 
-        return recipeNames;
+        return recipes;
     }
     return GetRecipes();
 }
