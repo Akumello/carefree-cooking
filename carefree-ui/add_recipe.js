@@ -2,6 +2,8 @@
 // Edit and delete buttons stack when instruction text takes up two lines
 // Need to adjust edit to only work on one at a time
 
+import { Recipe } from "./recipe.js";
+
 /***** Data to collect from user *****/
 let recipeName = 'Mexican Rice';
 let category = 'Mexican';
@@ -14,8 +16,6 @@ let instructionList = ['Blend onion, garlic, tomatoes, salt, and chicken boullio
 // get recipe id from url if present and pull its info from db to populate as above
 // if not present use above data in dev, but should be blank in production
 let recipeId = new URLSearchParams(window.location.search).get('recipe');
-console.log(recipeId);
-
 
 /*********** HTML Elements ***********/
 let recipeNameInput = document.querySelector('#recipe-name');
@@ -31,6 +31,51 @@ let addInstructionButton = document.querySelector('#add-instruction-button');
 let saveButton = document.querySelector('#save-button');
 let cancelButton = document.querySelector('#cancel-button');
 /*************************************/
+
+let recipe;
+
+if(recipeId)
+{
+    // fetch recipe info
+    // Pull recipe data from DB
+    let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/${recipeId}`);
+    recipeData.then(recipeFromDb => 
+    {
+        recipe = new Recipe(recipeFromDb.name, recipeFromDb.category, recipeFromDb.version);
+        recipeName = recipe.name;
+        recipeNameInput.value = recipeName;
+        category = recipe.category;
+        version = recipe.version;
+
+        let steps = requestRecipes(`http://localhost:8080/step/listing/${recipeId}`);
+        steps.then(steps => 
+        {
+            instructionList = [];
+
+            steps.forEach(step => 
+            {
+                instructionList.push(step.instruction);
+                
+            });
+
+            // ingredints code
+            let ingredients = requestRecipes(`http://localhost:8080/ingredient/listing/${recipeId}`);
+            ingredients.then(ingredients => 
+            {
+                ingredientList = [];
+                ingredients.forEach(ingredient => 
+                {
+                    ingredientList.push(ingredient.name);
+                    
+                });
+                console.log(ingredientList);
+                updateListElement(ingredientList, ingredientListElem);
+updateListElement(instructionList, instructionListElem);
+            });
+        });
+
+    });
+}
 
 // Generate html li element for the list
 function createListItem(text, id, isBulleted)
@@ -132,17 +177,20 @@ addIngredientTextArea.addEventListener('keyup', e =>
 });
 
 // Run addItem when the add item button is clicked or the user hits enter inside the text area
-addInstructionButton.addEventListener('click', () => {
+addInstructionButton.addEventListener('click', () => 
+{
         addItem(instructionList, instructionListElem, addInstructionTextArea);
     }
 );
-addInstructionTextArea.addEventListener('keyup', e => {
+addInstructionTextArea.addEventListener('keyup', e => 
+{
     if(e.keyCode === 13) {
         addItem(instructionList, instructionListElem, addInstructionTextArea);
     }
 });
 
-recipeNameInput.addEventListener('input', e => {
+recipeNameInput.addEventListener('input', e => 
+{
     if(recipeNameInput.classList.contains('border-danger'))
     {
         recipeNameInput.classList.remove('border-danger');
@@ -154,7 +202,8 @@ recipeNameInput.addEventListener('input', e => {
 });
 
 // Remove focus from the recipe name input when enter is pressed
-recipeNameInput.addEventListener('keyup', e => {
+recipeNameInput.addEventListener('keyup', e => 
+{
     if(e.keyCode === 13)
         recipeNameInput.blur();
 });
@@ -276,9 +325,13 @@ saveButton.addEventListener('click', e =>
 
     // Send request
     let resourceUrl = `http://localhost:8080/recipe/saveAll`;
-    sendRecipe(resourceUrl, recipeJSON);
+    let sendResult = sendRecipe(resourceUrl, recipeJSON);
 
     // Go to recipe view on success
+    sendResult.then(result => 
+    {
+        window.open('recipe_menu.html', '_self');
+    });
 });
 
 cancelButton.addEventListener('click', e => 
@@ -286,6 +339,24 @@ cancelButton.addEventListener('click', e =>
     // Go to recipe menu
     window.open('/recipe_menu.html', '_self');
 });
+
+function requestRecipes(resourceUrl)
+{
+    let GetRecipe = async () =>
+    {
+        let response = await fetch(resourceUrl,
+        { 
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }); 
+        let recipe = await response.json();
+
+        return recipe;
+    }
+    return GetRecipe();
+}
 
 function sendRecipe(resourceUrl, recipe)
 {
@@ -300,9 +371,8 @@ function sendRecipe(resourceUrl, recipe)
             body: recipe
         }); 
         let data = await response.json();
-        console.log(data);
     }
-    GetStepInstructions();
+    return GetStepInstructions();
 }
 
 function generateJSON()

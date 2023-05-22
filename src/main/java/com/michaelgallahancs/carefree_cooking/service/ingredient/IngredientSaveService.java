@@ -2,7 +2,6 @@ package com.michaelgallahancs.carefree_cooking.service.ingredient;
 
 import com.michaelgallahancs.carefree_cooking.entity.data.Ingredient;
 import com.michaelgallahancs.carefree_cooking.repository.IngredientRepository;
-import com.michaelgallahancs.carefree_cooking.repository.StepRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -22,4 +22,14 @@ public class Ingredient extends AbstractDomainEntity
     @JsonIgnore
     @ManyToMany(mappedBy = "ingredients")
     private List<Recipe> recipes = new ArrayList<>();
+
+    public void removeRecipe(Recipe recipe)
+    {
+        recipes.remove(recipe);
+    }
+
+    public void removeAllRecipes()
+    {
+        recipes.clear();
+    }
 }

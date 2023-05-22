@@ -30,6 +30,7 @@ public class RecipeSaveController {
     @PostMapping(value = "/saveAll")
     public Recipe saveRecipe(@RequestBody RecipeWrapper recipe)
     {
+        // TODO Make comments and only save ingredients that are not duplicate
         // GetRecipe returns a ready to commit recipe without steps
         Recipe unwrappedRecipe = recipe.getRecipe();
         List<Step> steps;

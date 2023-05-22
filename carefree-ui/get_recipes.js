@@ -9,8 +9,6 @@ addRecipeButton.addEventListener('click', e =>
 recipeList.addEventListener('click', e => 
 {
     let clickType = e.target.id.split('-')[0];
-
-    // Need to modify js to use db id in html id
     let recipeId = e.target.id.split('-')[1];
 
     if(clickType === 'recipe')
@@ -21,24 +19,30 @@ recipeList.addEventListener('click', e =>
     
     if(clickType === 'delete')
     {
-        // Get recipe id
-        // remove from db
-        // refresh page
-        console.log('del');
+        // Db remove request
+        let rec = deleteRecipe(`http://localhost:8080/recipe/delete/${recipeId}`);
+
+        // Refresh after removal
+        rec.finally(recipe => 
+        {
+            updateList();
+        });
     }
 });
 
-// get list of recipes from backend
-let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/all`);
-recipeData.then((recipes) => 
+function updateList()
 {
-    recipes.forEach((recipe, i) => 
+    // get list of recipes from backend
+    let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/all`);
+    recipeList.innerHTML = "";
+    recipeData.then((recipes) => 
     {
-        recipeList.appendChild(MakeButton(i, recipe.id, recipe.name));
+        recipes.forEach((recipe, i) => 
+        {
+            recipeList.appendChild(MakeButton(i, recipe.id, recipe.name));
+        });
     });
-
-    console.log(recipes)
-});
+}
 
 function MakeButton(index, recipeId, recipeName)
 {
@@ -72,3 +76,21 @@ function requestRecipes(resourceUrl)
     }
     return GetRecipes();
 }
+
+function deleteRecipe(resourceUrl)
+{
+    let DeleteRecipe = async () =>
+    {
+        let response = await fetch(resourceUrl,
+        { 
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }); 
+        return await response.json();
+    }
+    return DeleteRecipe();
+}
+
+updateList();

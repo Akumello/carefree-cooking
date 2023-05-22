@@ -10,8 +10,8 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class RecipeListingService {
-
+public class RecipeListingService
+{
     @Autowired
     private RecipeRepository recipeRepository;
 
