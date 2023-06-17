@@ -16,6 +16,8 @@ let instructionList = ['Blend onion, garlic, tomatoes, salt, and chicken boullio
 // get recipe id from url if present and pull its info from db to populate as above
 // if not present use above data in dev, but should be blank in production
 let recipeId = new URLSearchParams(window.location.search).get('recipe');
+if (recipeId == null)
+    recipeId = "";
 
 /*********** HTML Elements ***********/
 let recipeNameInput = document.querySelector('#recipe-name');
@@ -70,10 +72,9 @@ if(recipeId)
                 });
                 console.log(ingredientList);
                 updateListElement(ingredientList, ingredientListElem);
-updateListElement(instructionList, instructionListElem);
+                updateListElement(instructionList, instructionListElem);
             });
         });
-
     });
 }
 
@@ -324,7 +325,8 @@ saveButton.addEventListener('click', e =>
     console.log(recipeJSON);
 
     // Send request
-    let resourceUrl = `http://localhost:8080/recipe/saveAll`;
+    let resourceUrl = `http://localhost:8080/recipe/saveAll/${recipeId}`;
+    console.log(resourceUrl);
     let sendResult = sendRecipe(resourceUrl, recipeJSON);
 
     // Go to recipe view on success
