@@ -8,6 +8,7 @@ addRecipeButton.addEventListener('click', e =>
 
 recipeList.addEventListener('click', e => 
 {
+
     let clickType = e.target.id.split('-')[0];
     let recipeId = e.target.id.split('-')[1];
 
@@ -39,17 +40,18 @@ function updateList()
     {
         recipes.forEach((recipe, i) => 
         {
-            recipeList.appendChild(MakeButton(i, recipe.id, recipe.name));
+            recipeList.innerHTML += MakeRecipeRow(i, recipe.id, recipe.name).innerHTML;
         });
     });
 }
 
-function MakeButton(index, recipeId, recipeName)
+function MakeRecipeRow(index, recipeId, recipeName)
 {
     // Could also start with a template and access via .content rather than .firstElementChild, but some old browser do not support it
-    let button = document.createElement('div');
-    button.innerHTML = `<div class="d-flex"><button class="btn btn btn-outline-primary text-start mb-2 p-3 container-fluid" id="recipe-${recipeId}"><span>${index+1}. ${recipeName}</span></button><button class="btn btn-outline-primary text-start mx-1 mb-2 p-3 fas fa-trash-alt" id="delete-${recipeId}"></button></div>`;
-    return button.firstElementChild;
+    let row = document.createElement('div');
+    row.innerHTML = `<button class="button-light text-left" id="recipe-${recipeId}">${index+1}. ${recipeName}</button><button class="fas fa-trash-alt button delete-btn" id="delete-${recipeId}"></button>`;
+    //`<div class="d-flex"><button class="btn btn btn-outline-primary text-start mb-2 p-3 container-fluid" id="recipe-${recipeId}"><span>${index+1}. ${recipeName}</span></button><button class="btn btn-outline-primary text-start mx-1 mb-2 p-3 fas fa-trash-alt" id="delete-${recipeId}"></button></div>`;
+    return row;
 }
 
 function requestRecipes(resourceUrl)

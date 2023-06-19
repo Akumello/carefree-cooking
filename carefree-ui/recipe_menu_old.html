@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <link href="bootstrap_theme/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+        <link rel="stylesheet" href="style.css"/>
+        <title>Carefree Cooking</title>
+    </head>
+    <body class="bg-white bg-gradient">
+        <!-- Header -->
+        <header class="bg-dark text-light p-3">
+            <div>
+                <h1 class="align-middle fs-1 lead">Carefree Cooking</h1>
+            </div>
+        </header>
+
+        <div class="container-fluid wrapper pb-4">
+            <div class="p-2"></div>
+            <section class="container text-dark px-0 py-3 rounded-top">
+                <div class="p-1 d-flex justify-content-between">
+                    <h3>Select a recipe...</h3>
+                    <button class="btn btn-outline-secondary" id="add-recipe-button">Add a recipe</button>
+                </div>
+            </section>
+            
+            <!-- Show Recipes Section -->
+            <section class="container text-dark bg-light border border-secondary p-3 rounded-top rounded-bottom" style="background-color:aliceblue;">
+                <h3>Recipes</h3>
+                <div class="container mt-3">
+                    <ol class="input-group-btn list-group" id="recipe-list">
+                        <!-- <div class="d-flex"><button class="btn btn btn-outline-primary text-start mb-2 p-3 container-fluid" id="recipe-btn-${id}"><span>${id+1}. ${recipeName}</span></button><button class="btn btn-outline-primary text-start mx-1 mb-2 p-3 fas fa-trash-alt" id="recipe-delete-btn-${id}"></button></div> -->
+                    </ol>
+                </div>
+            </section>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-light text-dark p-3 text-right">
+            <h5>Powered by Spring and Bootstrap 5</h5>
+        </footer>
+        <script src="get_recipes.js"></script>
+    </body>
+</html>
