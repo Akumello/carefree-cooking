@@ -11,6 +11,8 @@ let ingredientLoadingHtml = document.querySelector('#ingredient-loading');
 let recipeId = new URLSearchParams(window.location.search).get('recipe');
 let recipe;
 
+
+
 backButton.addEventListener('click', e => 
 {
     window.open('recipe_menu.html', '_self');
@@ -36,7 +38,6 @@ if(recipeId)
         {
             steps.forEach(step => 
             {
-                stepLoadingHtml.classList.add('d-none');
                 let litem = document.createElement('li');
                 litem.textContent = step.instruction;
                 stepListHtml.appendChild(litem);
@@ -48,7 +49,6 @@ if(recipeId)
             {
                 ingredients.forEach(ingredient => 
                 {
-                    ingredientLoadingHtml.classList.add('d-none');
                     let litem = document.createElement('li');
                     litem.textContent = ingredient.name;
                     ingredientListHtml.appendChild(litem);

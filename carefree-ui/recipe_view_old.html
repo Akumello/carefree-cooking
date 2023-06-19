@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <link href="bootstrap_theme/bootstrap.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+        <!-- <link rel="stylesheet" href="style.css"/> -->
+        <title>Carefree Cooking</title>
+    </head>
+    <body class="bg-white bg-gradient">
+        <!-- Header -->
+        <header class="bg-dark text-light p-3">
+            <div>
+                <h1 class="align-middle fs-1 lead">Carefree Cooking</h1>
+            </div>
+        </header>
+        <div class="container-fluid wrapper">
+            <div class="p-2"></div>
+
+            <section class="container text-dark px-0 py-3 rounded-top">
+                <div>
+                    <button class="btn btn-outline-secondary" id="back-button">< Back to Recipes</button>
+                </div>
+            </section>
+
+            <!-- Recipe Title-->
+            <section>
+                <div class="d-flex justify-content-between">
+                    <h1 class="py-2" id="recipe-title"></h1>
+                    <button class="btn btn-outline-secondary m-3" id="edit-button">Edit</button>
+                </div>
+            </section>
+
+            <!-- Ingredients Section -->
+            <section class="container bg-secondary text-light p-3 rounded-top rounded-bottom">
+                <h3>Ingredients</h3>
+                <div class="container m-3">
+                    <ol class="list-group" id="ingredient-list">
+                        <li id="ingredient-loading"></li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Instructions Section -->
+            <section class="container bg-light text-dark border border-secondary p-3 rounded-top rounded-bottom">
+                <h3>Instructions</h3>
+                <div class="container m-3">
+                    <ol class="list-group" id="step-list">
+                        <li id="step-loading">loading...</li>
+                    </ol>
+                </div>
+            </section>
+
+            <div class="p-5"></div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-light text-dark p-3 text-right">
+            <h5>Powered by Spring and Bootstrap 5</h5>
+        </footer>
+        <script src="recipe.js" type="module"></script>
+        <script src="recipe_view.js" type="module"></script>
+    </body>
+</html>

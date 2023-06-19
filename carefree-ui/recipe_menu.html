@@ -7,169 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
-        <link rel="stylesheet" href="">
-
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Indie+Flower&family=Lobster&family=Mukta:wght@200;300;400;500;600;700;800&display=swap');
-
-            :root {
-                --dark: #21435D;
-                --light: #F7F6F6;
-                --dark-accent: #807595;
-                --accent-alpha: #80759515;
-                --light-accent: #7B949C;
-                --main: #7A6F8F;
-            }
-
-            body {
-                margin: 0;
-                color: var(--dark);
-                background-color: var(--light);
-                display:flex;
-                flex-direction:column;
-                min-height:100vh;
-                font-family: 'Mukta', Courier, monospace;
-            }
-
-            .header {
-                margin-bottom: 13px;
-            }
-
-            .wrapper
-            {
-                flex:1;
-            }
-
-            h1 {
-                color: var(--dark);
-                font-size: 180%;
-                margin: 0;
-            }
-
-            .container {
-                margin-left: 14%;
-                margin-right: 14%;
-                margin-bottom: 20px;
-            }
-
-            .grid {
-                display: grid;
-                grid-template-columns: 1fr auto;
-                vertical-align: top;
-                column-gap: 5px;
-                row-gap: 8px;
-            }
-
-            .button, .button-dark, .button-light {
-                border: solid;
-                border-width: 1px;
-                font-size: large;
-                padding: 8px 12px;
-                border-radius: 9999px;
-                cursor: pointer;
-                background-size: 210% auto;
-                background-image: linear-gradient(90deg, #FFFFFF00 48%, rgba(123,148,156,1) 50%, #FFFFFF00 96%);
-                transition: color .4s, background-color .2s, box-shadow .2s, border .2s, background-position .4s;
-            }
-
-            .button-dark {
-                background-color: var(--main);
-                color: var(--light);
-                border-color: var(--dark);
-            }
-
-            .button-dark:hover {
-                background-color: var(--light);
-                color: var(--dark);
-            }
-
-            .button-dark:active {
-                background-color: var(--dark-accent);
-                color: var(--light);
-                box-shadow: 2px 2px 10px 1px rgba(0,0,0,.2);
-            }
-
-            .button-light {
-                border: none;
-                background-color: transparent;
-                font-family: 'Indie Flower', Courier, monospace;
-                font-size: x-large;
-                /* background-color: var(--light);
-                color: var(--main);
-                border-color: var(--dark-accent); */
-            }
-
-            .button-light:hover {
-                /* background-color: rgb(123,148,156); */
-                border-radius: 10px;
-                background-position: right;
-
-                
-                border-color: var(--light-accent);
-                color: var(--light);
-            }
-
-            .button-light:active {
-                background-color: var(--light);
-                color: var(--main);
-            }
-
-            .delete-btn:hover {
-                box-shadow: 2px 2px 10px 1px rgba(0,0,0,.2);
-            }
-
-            .delete-btn:active {
-                box-shadow: 2px 2px 10px 1px rgba(0,0,0,.2);
-                opacity: .4;
-            }
-
-            .outline {
-                border: solid;
-                border-width: 1px;
-                border-radius: 15px;
-                border-color: var(--dark);
-                background-color: var(--accent-alpha);
-                padding: 1.5% 2%;
-            }
-
-            #recipe-list {
-                padding-left: 1.5%;
-            }
-
-            .text-left {
-                text-align: left !important;
-            }
-
-            .right-margin {
-                margin-right: 4px;
-            }
-
-            #website-title {
-                font-size:50px;
-                font-family: 'Lobster', Courier, monospace;
-                margin: 0;
-                margin-bottom: 40px;
-                padding-top: 8px;
-                padding-left: 1.5%;
-                padding-bottom: 15px;
-                border-bottom:solid;
-                color: var(--light);
-                background-color: var(--dark);
-                cursor: pointer;
-                transition: opacity .45s;
-            }
-
-            .delete-btn {
-                border: none;
-                background-color: transparent;
-            }
-
-            footer {
-                padding-left: 1.5%;
-                background-color: var(--accent-alpha);
-            }
-        </style>
-
+        <link rel="stylesheet" href="style.css">
     </head>
     <!-- TODO: Change onscroll to js only -->
     <body onscroll="test()"> 
@@ -180,17 +18,18 @@
 
         <!-- Main Body -->
         <section class="wrapper">
-            <div class="container grid">
+            <div class="mx mb grid">
                 <h1>Select a recipe...</h1>
                 <button class="button-dark" id="add-recipe-button">Add recipe</button>
             </div>
-            <div class="container outline">
+            <div class="mx mb outline">
                 <h1 class="header">Recipes</h1>
                 <div class="grid" id="recipe-list">
-                    <!-- <button class="button-light text-left" id="recipe-${id}">${id+1}. ${recipeName}</button><button class="fas fa-trash-alt button delete-btn" id="recipe-delete-btn-${id}"></button> -->
+                    <!-- <button class="recipe-select text-left" id="recipe-${id}">${id+1}. ${recipeName}</button><button class="fas fa-trash-alt button delete-btn" id="recipe-delete-btn-${id}"></button> -->
                 </div>
             </div>
         </section>
+
         <!-- Sticky Footer -->
         <footer>
             <h3>Powered by Spring</h3>

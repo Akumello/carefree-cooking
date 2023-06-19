@@ -49,7 +49,7 @@ function MakeRecipeRow(index, recipeId, recipeName)
 {
     // Could also start with a template and access via .content rather than .firstElementChild, but some old browser do not support it
     let row = document.createElement('div');
-    row.innerHTML = `<button class="button-light text-left" id="recipe-${recipeId}">${index+1}. ${recipeName}</button><button class="fas fa-trash-alt button delete-btn" id="delete-${recipeId}"></button>`;
+    row.innerHTML = `<button class="recipe-select text-left" id="recipe-${recipeId}">${index+1}. ${recipeName}</button><button class="fas fa-trash-alt button delete-btn" id="delete-${recipeId}"></button>`;
     //`<div class="d-flex"><button class="btn btn btn-outline-primary text-start mb-2 p-3 container-fluid" id="recipe-${recipeId}"><span>${index+1}. ${recipeName}</span></button><button class="btn btn-outline-primary text-start mx-1 mb-2 p-3 fas fa-trash-alt" id="delete-${recipeId}"></button></div>`;
     return row;
 }
