@@ -82,8 +82,8 @@ if(recipeId)
 function createListItem(text, id, isBulleted)
 {
     let li = document.createElement('li');
-    li.setAttribute('class', 'list-group-item d-flex justify-content-between');
     li.setAttribute('id', `li-${id}`);
+    li.classList.add('border-bottom');
 
     let liBullet = String(Number(id)+1) + ".";
     if(isBulleted)
@@ -91,7 +91,7 @@ function createListItem(text, id, isBulleted)
         liBullet = "&#8226;";
     }
 
-    li.innerHTML = `<div>${liBullet} ${text}</div><div class="d-none">${liBullet} <input type="text" value="${text}" id="input-${id}" size="65"></input></div><div style="cursor: pointer;"><i class="fas fa-edit p-1"></i><i class="fas fa-save p-1 px-2 d-none"></i><i class="fas fa-trash-alt p-1"></i></div>`;
+    li.innerHTML = `<div class="flex-display"><div class="flex-1">${text}</div><input type="text" value="${text}" id="input-${id}" class="flex-1 d-none"><div style="cursor: pointer;"><i class="fas fa-edit li-buttons"></i><i class="fas fa-save li-buttons d-none"></i><i class="fas fa-trash-alt li-buttons"></i></div></div>`;
         /*
             <div>${Number(id)+1}. ${text}</div>
             <div class="d-none">
@@ -104,6 +104,17 @@ function createListItem(text, id, isBulleted)
                 <i class="fas fa-trash-alt p-1"></i>
             </div>
         */
+       /*
+            <div class="flex-display">
+                <div class="flex-1">${text}</div>
+                <input type="text" value="${text}" id="input-${id}" class="flex-1 d-none">
+                <div>
+                    <i class="fas fa-edit li-buttons"></i>
+                    <i class="fas fa-save li-buttons d-none"></i>
+                    <i class="fas fa-trash-alt li-buttons"></i>
+                </div>
+            </div>
+       */
 
     return li;
 }
@@ -225,7 +236,7 @@ function saveItem(clicked, list, listHtmlElem)
 {
     // Get index of the item to edit
     const num = /\d+/;
-    const liElement = clicked.parentNode.parentNode;
+    const liElement = clicked.parentNode.parentNode.parentNode;
     const index = liElement.id.match(num);
 
     // Remove the item from the todo list
@@ -238,14 +249,31 @@ function saveItem(clicked, list, listHtmlElem)
 
 function editItem(clicked, list, listHtmlElem)
 {
+       /*
+            <div class="flex-display">
+                <div class="flex-1">${text}</div>
+                <input type="text" value="${text}" id="input-${id}" class="flex-1 d-none">
+                <div>
+                    <i class="fas fa-edit li-buttons"></i>
+                    <i class="fas fa-save li-buttons d-none"></i>
+                    <i class="fas fa-trash-alt li-buttons"></i>
+                </div>
+            </div>
+       */
+
     // Switch the sibling div to an input text field and change edit button to a save button
     clicked.classList.add('d-none');
     clicked.nextSibling.classList.remove('d-none');
-    clicked.parentNode.parentNode.firstChild.nextSibling.classList.remove('d-none');
-    clicked.parentNode.parentNode.firstChild.setAttribute('class', 'd-none');
 
-    clicked.parentNode.parentNode.firstChild.nextSibling.firstChild.nextSibling.select();
-    clicked.parentNode.parentNode.firstChild.nextSibling.firstChild.nextSibling.addEventListener('keyup', e => 
+    let li = clicked.parentNode.parentNode.parentNode;
+    let itemNameLocked = li.firstChild.firstChild;
+    let itemNameUnlocked = itemNameLocked.nextSibling;
+    
+    itemNameUnlocked.classList.remove('d-none');
+    itemNameLocked.setAttribute('class', 'd-none');
+
+    itemNameUnlocked.select();
+    itemNameUnlocked.addEventListener('keyup', e => 
     {
         if(e.keyCode === 13) 
         {

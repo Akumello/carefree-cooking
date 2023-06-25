@@ -9,6 +9,7 @@
     --light-accent: #7B949C;
     --light-accent-rgb: 123, 148, 156;
     --main: #7A6F8F;
+    --margin-x: 14%;
 }
 
 body {
@@ -36,9 +37,34 @@ h1 {
     margin: 0;
 }
 
+.flex-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 5px;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.li-buttons {
+    margin-right: 5px;
+    cursor: pointer;
+    transition: box-shadow .2s, opacity .2s;
+}
+
+.li-buttons:hover {
+    box-shadow: 2px 2px 10px 1px rgba(0,0,0,.5);
+}
+
+.li-buttons:active {
+    opacity: .6;
+}
+
 .mx {
-    margin-left: 14%;
-    margin-right: 14%;
+    margin-left: var(--margin-x);
+    margin-right: var(--margin-x);
 }
 
 .mb {
@@ -47,6 +73,10 @@ h1 {
 
 .mb-sm {
     margin-bottom: 10px;
+}
+
+.d-none {
+    display: none;
 }
 
 .grid {
@@ -84,6 +114,10 @@ h1 {
     background-color: var(--dark-accent);
     color: var(--light);
     box-shadow: 2px 2px 10px 1px rgba(0,0,0,.2);
+}
+
+.button:hover {
+    background-color: var(--light-accent);
 }
 
 .recipe-select {
@@ -131,6 +165,19 @@ h1 {
     color: var(--light) !important; 
 }
 
+#recipe-name {
+    border: solid;
+    border-width: 1px;
+    border-radius: 15px;
+    font-size: xx-large;
+    font-family: 'Indie Flower';
+    box-sizing: border-box;
+    padding: 10px;
+    margin-left: var(--margin-x);
+    width: calc(100% - var(--margin-x) * 2);
+    background-color: rgba(var(--light-accent-rgb), .2);
+}
+
 #edit-button,
 #back-button {
     font-family: 'Indie Flower';
@@ -157,8 +204,20 @@ h1 {
     background-color: transparent;
 }
 
+.border-bottom {
+    border-bottom: outset;
+    border-width: 1px;
+    padding: 5px;
+    margin: 10px 0px;
+}
+
+#add-ingredient-input {
+    box-sizing: border-box;
+}
+
 .list-group {
-    font-size: large;
+    font-size: x-large;
+    font-family: 'Indie Flower';
     margin: 0;
     margin-bottom: 10px;
     padding-left: 30px;
@@ -196,8 +255,13 @@ h1 {
     background-color: transparent;
 }
 
+.recipe-header {
+    padding-left: 2%;
+}
+
 #recipe-title {
     font-size: xx-large;
+    font-family: 'Indie Flower';
 }
 
 footer {
