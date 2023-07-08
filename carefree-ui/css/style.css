@@ -10,6 +10,7 @@
     --light-accent-rgb: 123, 148, 156;
     --main: #7A6F8F;
     --margin-x: 14%;
+    --gradient: conic-gradient(at 125% 50%, #b78cf7, #ff7c94, #ffcf0d, #ff7c94, #b78cf7);
 }
 
 body {

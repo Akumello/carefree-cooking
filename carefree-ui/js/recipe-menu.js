@@ -1,52 +1,45 @@
+import * as urls from './urls.js';
+
 let recipeList = document.querySelector('#recipe-list');
 let addRecipeButton = document.querySelector('#add-recipe-button');
 
-addRecipeButton.addEventListener('click', e => 
-{
-    window.open('add_recipe.html', '_self');
+// Go to add page when user selects add button
+addRecipeButton.addEventListener('click', e => {
+    window.open(urls.recipeAddUrl, '_self');
 });
 
-recipeList.addEventListener('click', e => 
-{
-
+// Go to OR delete recipe when recipe list row is selected
+recipeList.addEventListener('click', e => {
+    // Identify whether the recipe button or the delete button was selected
     let clickType = e.target.id.split('-')[0];
     let recipeId = e.target.id.split('-')[1];
 
-    if(clickType === 'recipe')
-    {
-        // Open recipe_view.html and send recipe id to it to open
-        window.open('recipe_view.html?recipe=' + encodeURIComponent(recipeId), '_self');
-    } 
-    
-    if(clickType === 'delete')
-    {
+    if(clickType === 'recipe') {
+        // Open view page and send recipe id to it
+        window.open(urls.recipeViewerUrl + '?recipe=' + encodeURIComponent(recipeId), '_self');
+    }
+    if(clickType === 'delete') {
         // Db remove request
         let rec = deleteRecipe(`http://localhost:8080/recipe/delete/${recipeId}`);
 
         // Refresh after removal
-        rec.finally(recipe => 
-        {
+        rec.finally(recipe => {
             updateList();
         });
     }
 });
 
-function updateList()
-{
-    // get list of recipes from backend
+function updateList() {
     let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/all`);
-    recipeList.innerHTML = "";
-    recipeData.then((recipes) => 
-    {
-        recipes.forEach((recipe, i) => 
-        {
+
+    recipeData.then((recipes) => {
+        recipes.forEach((recipe, i) => {
             recipeList.innerHTML += MakeRecipeRow(i, recipe.id, recipe.name).innerHTML;
         });
     });
 }
 
-function MakeRecipeRow(index, recipeId, recipeName)
-{
+function MakeRecipeRow(index, recipeId, recipeName) {
     // Could also start with a template and access via .content rather than .firstElementChild, but some old browser do not support it
     let row = document.createElement('div');
     row.innerHTML = `<button class="recipe-select text-left" id="recipe-${recipeId}">${index+1}. ${recipeName}</button><button class="fas fa-trash-alt button delete-btn" id="delete-${recipeId}"></button>`;
@@ -54,42 +47,29 @@ function MakeRecipeRow(index, recipeId, recipeName)
     return row;
 }
 
-function requestRecipes(resourceUrl)
-{
-    let GetRecipes = async () =>
-    {
-        let response = await fetch(resourceUrl,
-        { 
+// Request all recipes from endpoint "recipe/listing/all"
+function requestRecipes(resourceUrl) {
+    let GetRecipes = async () => {
+        let allRecipeData = await fetch(resourceUrl, { 
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         }); 
-        let data = await response.json();
-        
-        let recipes = [data[0]];
-        for (let i = 1; i < data.length; i++)
-        {
-            const recipe = data[i];
-            recipes.push(recipe);
-        }
-
-        return recipes;
+        return await allRecipeData.json();
     }
     return GetRecipes();
 }
 
-function deleteRecipe(resourceUrl)
-{
-    let DeleteRecipe = async () =>
-    {
-        let response = await fetch(resourceUrl,
-        { 
+// Request delete at end point "recipe/delete/${recipeId}"
+function deleteRecipe(resourceUrl) {
+    let DeleteRecipe = async () => {
+        let response = await fetch(resourceUrl, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
             }
-        }); 
+        });
         return await response.json();
     }
     return DeleteRecipe();

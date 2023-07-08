@@ -1,8 +1,10 @@
 // Bugs:
-// Edit and delete buttons stack when instruction text takes up two lines
 // Need to adjust edit to only work on one at a time
+// Error highlighting no longer works after HTML redesign
+// Delete no longer deleting the correct item after redesign
 
 import { Recipe } from "./recipe.js";
+import * as urls from "./urls.js";
 
 /***** Data to collect from user *****/
 let recipeName = 'Mexican Rice';
@@ -12,9 +14,8 @@ let ingredientList = ['Jasmine Rice', 'Tomato', 'Onion'];
 let instructionList = ['Blend onion, garlic, tomatoes, salt, and chicken boullion', 'Toast rice in oil over medium heat for about 7 mins until slightly golden.', 'Added blended mixture to toasted rice', 'Bring to a boil. Give one last stir, reduce heat to low, cover with lid and simmer for 15 mins.', 'Fluff rice and let rest for another 10 minutes before serving.'];
 /*************************************/
 
-// ^ replace this with below psuedocode
-// get recipe id from url if present and pull its info from db to populate as above
-// if not present use above data in dev, but should be blank in production
+// Get recipeId from url, if present, and pull its info from db to populate above variables
+// If not present, use above pre-populated data for development, but will be blank in production
 let recipeId = new URLSearchParams(window.location.search).get('recipe');
 if (recipeId == null)
     recipeId = "";
@@ -35,9 +36,7 @@ let cancelButton = document.querySelector('#cancel-button');
 /*************************************/
 
 let recipe;
-
-if(recipeId)
-{
+if(recipeId) {
     // fetch recipe info
     // Pull recipe data from DB
     let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/${recipeId}`);
@@ -92,18 +91,6 @@ function createListItem(text, id, isBulleted)
     }
 
     li.innerHTML = `<div class="flex-display"><div class="flex-1">${text}</div><input type="text" value="${text}" id="input-${id}" class="flex-1 d-none"><div style="cursor: pointer;"><i class="fas fa-edit li-buttons"></i><i class="fas fa-save li-buttons d-none"></i><i class="fas fa-trash-alt li-buttons"></i></div></div>`;
-        /*
-            <div>${Number(id)+1}. ${text}</div>
-            <div class="d-none">
-                ${Number(id)+1}. 
-                <input type="text" value="${text}" id="input-${id} size="75""></input>
-            </div>
-            <div style="cursor: pointer;">
-                <i class="fas fa-edit p-1"></i>
-                <i class="fas fa-save p-1 px-2 d-none"></i>
-                <i class="fas fa-trash-alt p-1"></i>
-            </div>
-        */
        /*
             <div class="flex-display">
                 <div class="flex-1">${text}</div>
@@ -360,14 +347,14 @@ saveButton.addEventListener('click', e =>
     // Go to recipe view on success
     sendResult.then(result => 
     {
-        window.open('recipe_menu.html', '_self');
+        window.open(urls.recipeMenuUrl, '_self');
     });
 });
 
 cancelButton.addEventListener('click', e => 
 {
     // Go to recipe menu
-    window.open('/recipe_menu.html', '_self');
+    window.open(urls.recipeMenuUrl, '_self');
 });
 
 function requestRecipes(resourceUrl)
