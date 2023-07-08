@@ -1,7 +1,5 @@
 // Bugs:
 // Need to adjust edit to only work on one at a time
-// Error highlighting no longer works after HTML redesign
-// Delete no longer deleting the correct item after redesign
 
 import { Recipe } from "./recipe.js";
 import * as urls from "./urls.js";
@@ -35,34 +33,29 @@ let saveButton = document.querySelector('#save-button');
 let cancelButton = document.querySelector('#cancel-button');
 /*************************************/
 
-let recipe;
 if(recipeId) {
     // fetch recipe info
     // Pull recipe data from DB
     let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/${recipeId}`);
-    recipeData.then(recipeFromDb => 
-    {
-        recipe = new Recipe(recipeFromDb.name, recipeFromDb.category, recipeFromDb.version);
+    recipeData.then(recipeFromDb => {
+        let recipe = new Recipe(recipeFromDb.name, recipeFromDb.category, recipeFromDb.version);
         recipeName = recipe.name;
         recipeNameInput.value = recipeName;
         category = recipe.category;
         version = recipe.version;
 
         let steps = requestRecipes(`http://localhost:8080/step/listing/${recipeId}`);
-        steps.then(steps => 
-        {
+        steps.then(steps => {
             instructionList = [];
 
-            steps.forEach(step => 
-            {
+            steps.forEach(step => {
                 instructionList.push(step.instruction);
                 
             });
 
             // ingredints code
             let ingredients = requestRecipes(`http://localhost:8080/ingredient/listing/${recipeId}`);
-            ingredients.then(ingredients => 
-            {
+            ingredients.then(ingredients => {
                 ingredientList = [];
                 ingredients.forEach(ingredient => 
                 {
@@ -77,19 +70,32 @@ if(recipeId) {
     });
 }
 
+// updateListElement(ingredientList)
+// run createlistitem on each elem of the main array
+// set the innertext of ul to the generated html data
+function updateListElement(list, listHtmlElem) {
+    // Clear the current elements
+    while(listHtmlElem.firstChild)
+        listHtmlElem.removeChild(listHtmlElem.firstChild);
+
+    // Display the todo list
+    let newList = [...list];
+    let i = 0;
+    list.forEach(item => {
+        if(item === newList[0]) {
+            listHtmlElem.appendChild(createListItem(item, `${i}`));
+            newList.shift();
+        }
+        i++;
+    });
+    //*/
+}
+
 // Generate html li element for the list
-function createListItem(text, id, isBulleted)
-{
+function createListItem(text, id) {
     let li = document.createElement('li');
     li.setAttribute('id', `li-${id}`);
     li.classList.add('border-bottom');
-
-    let liBullet = String(Number(id)+1) + ".";
-    if(isBulleted)
-    {
-        liBullet = "&#8226;";
-    }
-
     li.innerHTML = `<div class="flex-display"><div class="flex-1">${text}</div><input type="text" value="${text}" id="input-${id}" class="flex-1 d-none"><div style="cursor: pointer;"><i class="fas fa-edit li-buttons"></i><i class="fas fa-save li-buttons d-none"></i><i class="fas fa-trash-alt li-buttons"></i></div></div>`;
        /*
             <div class="flex-display">
@@ -106,112 +112,58 @@ function createListItem(text, id, isBulleted)
     return li;
 }
 
-// updateListElement(ingredientList)
-// run createlistitem on each elem of the main array
-// set the innertext of ul to the generated html data
-function updateListElement(list, listHtmlElem)
-{
-    //* Clear the current elements
-    while(listHtmlElem.firstChild) 
-    {
-        listHtmlElem.removeChild(listHtmlElem.firstChild);
-    }
-
-    let isBulleted = true; // Assume numbered list for new list types
-    if(listHtmlElem.id == 'ingredient-list')
-        isBulleted = true;
-    else if(listHtmlElem.id == 'instruction-list')
-        isBulleted = false;
-
-    let newList = [...list];
-    // Display the todo list
-    let i = 0;
-    list.forEach(item => 
-    {
-        if(item === newList[0])
-        {
-            listHtmlElem.appendChild(createListItem(item, `${i}`, isBulleted));
-            newList.shift();
-        }
-        i++;
-    });
-    //*/
-}
-
-function removeRedBorder(htmlElem)
-{
-    if(htmlElem.classList.contains('border-danger'))
-    {
-        htmlElem.classList.remove('border-danger');
-        htmlElem.classList.remove('border-2');
-        htmlElem.classList.add('border-primary');
-    }
-}
-
-function addItem(list, listHtmlElem, textAreaToClear)
-{
+function addItem(list, listHtmlElem, textAreaToClear) {
     // Skip if user entered nothing
     const item = textAreaToClear.value;
     if(!item) { return; }
 
-    removeRedBorder(textAreaToClear);
+    if(textAreaToClear.classList.contains('border-error'))
+        textAreaToClear.classList.remove('border-error');
 
     textAreaToClear.value = '';
     list.push(item);
     updateListElement(list, listHtmlElem);
 }
 
-
 // Run addItem when the add item button is clicked or the user hits enter inside the text area
-addIngredientButton.addEventListener('click', () => 
-{
+addIngredientButton.addEventListener('click', () => {
         addItem(ingredientList, ingredientListElem, addIngredientTextArea)
 });
 
-addIngredientTextArea.addEventListener('keyup', e => 
-{
+addIngredientTextArea.addEventListener('keyup', e => {
     if(e.keyCode === 13) {
         addItem(ingredientList, ingredientListElem, addIngredientTextArea);
     }
 });
 
 // Run addItem when the add item button is clicked or the user hits enter inside the text area
-addInstructionButton.addEventListener('click', () => 
-{
+addInstructionButton.addEventListener('click', () => {
         addItem(instructionList, instructionListElem, addInstructionTextArea);
-    }
+}
 );
-addInstructionTextArea.addEventListener('keyup', e => 
-{
+addInstructionTextArea.addEventListener('keyup', e => {
     if(e.keyCode === 13) {
         addItem(instructionList, instructionListElem, addInstructionTextArea);
     }
 });
 
-recipeNameInput.addEventListener('input', e => 
-{
-    if(recipeNameInput.classList.contains('border-danger'))
-    {
-        recipeNameInput.classList.remove('border-danger');
-        recipeNameInput.classList.remove('border-2');
-        recipeNameInput.classList.add('border-primary');
+recipeNameInput.addEventListener('input', e => {
+    if(recipeNameInput.classList.contains('border-error')) {
+        recipeNameInput.classList.remove('border-error');
     }
-
     recipeName = recipeNameInput.value;
 });
 
-// Remove focus from the recipe name input when enter is pressed
-recipeNameInput.addEventListener('keyup', e => 
-{
+// Remove focus from the recipe name input on enter
+recipeNameInput.addEventListener('keyup', e => {
     if(e.keyCode === 13)
         recipeNameInput.blur();
 });
 
-function deleteItem(clicked, list, listHtmlElem)
-{
+function deleteItem(clicked, list, listHtmlElem) {
     // Get index of the item to remove
     const num = /\d+/;
-    const index = clicked.parentNode.parentNode.id.match(num);
+    const index = clicked.parentNode.parentNode.parentNode.id.match(num);
 
     // Remove the item from the todo list
     list.splice(index, 1);
@@ -219,8 +171,7 @@ function deleteItem(clicked, list, listHtmlElem)
     updateListElement(list, listHtmlElem);
 }
 
-function saveItem(clicked, list, listHtmlElem)
-{
+function saveItem(clicked, list, listHtmlElem) {
     // Get index of the item to edit
     const num = /\d+/;
     const liElement = clicked.parentNode.parentNode.parentNode;
@@ -234,20 +185,7 @@ function saveItem(clicked, list, listHtmlElem)
     updateListElement(list, listHtmlElem);
 }
 
-function editItem(clicked, list, listHtmlElem)
-{
-       /*
-            <div class="flex-display">
-                <div class="flex-1">${text}</div>
-                <input type="text" value="${text}" id="input-${id}" class="flex-1 d-none">
-                <div>
-                    <i class="fas fa-edit li-buttons"></i>
-                    <i class="fas fa-save li-buttons d-none"></i>
-                    <i class="fas fa-trash-alt li-buttons"></i>
-                </div>
-            </div>
-       */
-
+function editItem(clicked, list, listHtmlElem) {
     // Switch the sibling div to an input text field and change edit button to a save button
     clicked.classList.add('d-none');
     clicked.nextSibling.classList.remove('d-none');
@@ -260,18 +198,15 @@ function editItem(clicked, list, listHtmlElem)
     itemNameLocked.setAttribute('class', 'd-none');
 
     itemNameUnlocked.select();
-    itemNameUnlocked.addEventListener('keyup', e => 
-    {
-        if(e.keyCode === 13) 
-        {
+    itemNameUnlocked.addEventListener('keyup', e => {
+        if(e.keyCode === 13) {
             saveItem(clicked, list, listHtmlElem);
         }
     });
 }
 
 //######## Save, Edit, and Delete button functionality ########//
-ingredientListElem.addEventListener('click', e => 
-{   
+ingredientListElem.addEventListener('click', e => {
     // Delete button
     if(e.target.classList.contains('fa-trash-alt'))
         deleteItem(e.target, ingredientList, ingredientListElem);
@@ -285,8 +220,7 @@ ingredientListElem.addEventListener('click', e =>
         editItem(e.target, ingredientList, ingredientListElem);
 });
 
-instructionListElem.addEventListener('click', e => 
-{
+instructionListElem.addEventListener('click', e => {
     // Delete button
     if(e.target.classList.contains('fa-trash-alt'))
         deleteItem(e.target, instructionList, instructionListElem);
@@ -300,87 +234,63 @@ instructionListElem.addEventListener('click', e =>
         editItem(e.target, instructionList, instructionListElem);
 });
 
-saveButton.addEventListener('click', e => 
-{
+saveButton.addEventListener('click', e => {
     let infoMissing = false;
 
     // Check for recipe name
-    if (!recipeName)
-    {
-        recipeNameInput.classList.remove('border-primary');
-        recipeNameInput.classList.add('border-danger');
-        recipeNameInput.classList.add('border-2');
+    if (!recipeName) {
+        recipeNameInput.classList.add('border-error');
         infoMissing = true;
     }
 
     // Check for at least one ingredient
-    if (ingredientList.length == 0)
-    {
-        addIngredientTextArea.classList.remove('border-primary');
-        addIngredientTextArea.classList.add('border-danger');
-        addIngredientTextArea.classList.add('border-2');
+    if (ingredientList.length == 0) {
+        addIngredientTextArea.classList.add('border-error');
         infoMissing = true;
     }
 
     // Check for at least one instruction
+    // infoMissing not set because instructions are not a requirement
     if (instructionList.length == 0)
-    {
-        addInstructionTextArea.classList.remove('border-primary');
-        addInstructionTextArea.classList.add('border-danger');
-        addInstructionTextArea.classList.add('border-2');
-        infoMissing = 0; // instructions not a requirement at the moment
-    }
+        addInstructionTextArea.classList.add('border-error');
 
     // Cancel operation if the user is missing required data
     if(infoMissing)
         return;
 
     // Make json
-    let recipeJSON = generateJSON();
-    console.log(recipeJSON);
+    let recipeJSON = getRecipeJSON();
 
     // Send request
     let resourceUrl = `http://localhost:8080/recipe/saveAll/${recipeId}`;
-    console.log(resourceUrl);
     let sendResult = sendRecipe(resourceUrl, recipeJSON);
 
     // Go to recipe view on success
-    sendResult.then(result => 
-    {
+    sendResult.then(result => {
         window.open(urls.recipeMenuUrl, '_self');
     });
 });
 
-cancelButton.addEventListener('click', e => 
-{
-    // Go to recipe menu
+cancelButton.addEventListener('click', e => {
     window.open(urls.recipeMenuUrl, '_self');
 });
 
-function requestRecipes(resourceUrl)
-{
-    let GetRecipe = async () =>
-    {
-        let response = await fetch(resourceUrl,
-        { 
+function requestRecipes(resourceUrl) {
+    let GetRecipe = async () => {
+        let response = await fetch(resourceUrl, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         }); 
-        let recipe = await response.json();
-
-        return recipe;
+        return await response.json();
     }
     return GetRecipe();
 }
 
-function sendRecipe(resourceUrl, recipe)
-{
-    let GetStepInstructions = async () =>
-    {
-        let response = await fetch(resourceUrl, 
-        { 
+function sendRecipe(resourceUrl, recipe) {
+    let GetInstructions = async () => {
+        let response = await fetch(resourceUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -389,14 +299,11 @@ function sendRecipe(resourceUrl, recipe)
         }); 
         let data = await response.json();
     }
-    return GetStepInstructions();
+    return GetInstructions();
 }
 
-function generateJSON()
-{
-    let json = JSON.stringify
-    (
-        {
+function getRecipeJSON() {
+    return JSON.stringify({
             'name': recipeName, 
             'category': category, 
             'version': version,
@@ -404,10 +311,8 @@ function generateJSON()
             'instructions': instructionList.map((instruction,i) => ({step_number: i+1, instruction: instruction}))
         }
     );
-
-    return json;
 }
 
 updateListElement(ingredientList, ingredientListElem);
 updateListElement(instructionList, instructionListElem);
-generateJSON();
+getRecipeJSON();

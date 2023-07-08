@@ -179,6 +179,10 @@ h1 {
     background-color: rgba(var(--light-accent-rgb), .2);
 }
 
+#recipe-name.border-error {
+    border-color: red;
+}
+
 #edit-button,
 #back-button {
     font-family: 'Indie Flower';
@@ -258,6 +262,11 @@ h1 {
 
 .recipe-header {
     padding-left: 2%;
+}
+
+.border-error {
+    border-radius: 2px;
+    border-color: red;
 }
 
 #recipe-title {

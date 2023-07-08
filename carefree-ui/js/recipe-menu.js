@@ -30,9 +30,12 @@ recipeList.addEventListener('click', e => {
 });
 
 function updateList() {
+    // Get full list of recipes
     let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/all`);
 
+    // Clear current list and rebuild with latest data
     recipeData.then((recipes) => {
+        recipeList.innerHTML = '';
         recipes.forEach((recipe, i) => {
             recipeList.innerHTML += MakeRecipeRow(i, recipe.id, recipe.name).innerHTML;
         });
@@ -70,7 +73,6 @@ function deleteRecipe(resourceUrl) {
                 'Content-Type': 'application/json'
             }
         });
-        return await response.json();
     }
     return DeleteRecipe();
 }
