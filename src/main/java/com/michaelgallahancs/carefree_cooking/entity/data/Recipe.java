@@ -19,8 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Recipe extends AbstractDomainEntity
-{
+public class Recipe extends AbstractDomainEntity {
     @Column(nullable = false)
     private String name;
     private String category;

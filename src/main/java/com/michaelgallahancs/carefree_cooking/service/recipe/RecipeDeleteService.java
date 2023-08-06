@@ -71,9 +71,8 @@ public class RecipeDeleteService
         recipeRepository.deleteById(recipeId);
 
         // Remove ingredients with no recipes
-        ingredientsToRemove.forEach(ingredient ->
-        {
-            ingredientRepository.delete(ingredient);
+        ingredientsToRemove.forEach(ingredient -> {
+            ingredientRepository.deleteById(ingredient.getId());
         });
     }
 }

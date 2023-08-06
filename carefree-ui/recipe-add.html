@@ -8,12 +8,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/buttons.css">
+        <link rel="stylesheet" href="css/tools.css">
     </head>
     <!-- TODO: Change onscroll to js only -->
     <body> 
         <!-- Website header -->
-        <section>
-            <div id="website-title">Carefree Cooking</div>
+        <section id="website-title">
+            Carefree Cooking
         </section>
 
         <!-- Main Body -->
@@ -30,7 +32,7 @@
               </ul>
               <div class="flex-display">
                 <input type="text" id="add-ingredient-input" class="flex-1">
-                <button id="add-ingredient-button" class="button">Add</button>
+                <button id="add-ingredient-btn">Add</button>
             </div>
             </div>
 
@@ -39,14 +41,14 @@
                   <ol class="list-group" id="instruction-list"></ol>
                   <div class="flex-display">
                     <input type="text" id="add-instruction-input" class="flex-1">
-                    <button id="add-instruction-button" class="button-dark">Add</button>
+                    <button id="add-instruction-btn" class="btn-dark">Add</button>
                 </div>
             </div>
 
             <div class="flex-display mx">
                 <div class="flex-1"></div>
-                <button id="save-button" class="button-dark">Save</button>
-                <button id="cancel-button" class="button-dark">Cancel</button>
+                <button id="save-btn" class="btn-dark">Save</button>
+                <button id="cancel-btn" class="btn-dark">Cancel</button>
             </div>
         </section>
         

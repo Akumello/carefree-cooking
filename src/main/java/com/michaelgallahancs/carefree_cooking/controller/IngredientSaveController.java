@@ -15,8 +15,7 @@ public class IngredientSaveController {
     private IngredientSaveService ingredientSaveService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Ingredient saveIngredient(@RequestBody Ingredient ingredient)
-    {
+    public Ingredient saveIngredient(@RequestBody Ingredient ingredient) {
         return ingredientSaveService.save(ingredient);
     }
 }

@@ -52,10 +52,8 @@ public class RecipeSaveController {
 
     @CrossOrigin
     @PostMapping(value = "/saveAll/{recipeId}")
-    public Recipe saveRecipe(@RequestBody RecipeWrapper recipeToSave, @PathVariable Long recipeId)
-    {
+    public Recipe saveRecipe(@RequestBody RecipeWrapper recipeToSave, @PathVariable Long recipeId) {
         // TODO Make comments and only save ingredients that are not duplicate
-        // GetRecipe returns a ready to commit recipe without steps
         Recipe recipe = recipeRepository.getById(recipeId);
         recipe.setName(recipeToSave.getName());
         recipe.setVersion(recipeToSave.getVersion());

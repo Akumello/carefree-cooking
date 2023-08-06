@@ -9,8 +9,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public interface StepRepository extends JpaRepository<Step, Long>
-{
+public interface StepRepository extends JpaRepository<Step, Long> {
     List<Step> findAllByRecipe_Id(Long recipeId);
 
     @Transactional

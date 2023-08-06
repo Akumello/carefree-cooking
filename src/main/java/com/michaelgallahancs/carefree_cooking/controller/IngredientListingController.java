@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/ingredient/listing")
 public class IngredientListingController {
-
     @Autowired
     private IngredientListingService ingredientListingService;
 
@@ -22,8 +21,7 @@ public class IngredientListingController {
 
     @CrossOrigin
     @RequestMapping(value = "/{recipeId}", method = RequestMethod.GET)
-    public List<Ingredient> listIngredientsByRecipe(@PathVariable Long recipeId)
-    {
+    public List<Ingredient> listIngredientsByRecipe(@PathVariable Long recipeId) {
         return ingredientListingService.retrieveIngredients(recipeId);
     }
 }

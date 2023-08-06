@@ -15,8 +15,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class Ingredient extends AbstractDomainEntity
-{
+public class Ingredient extends AbstractDomainEntity {
     private String name;
 
     @JsonIgnore

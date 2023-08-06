@@ -28,15 +28,13 @@ import org.springframework.beans.factory.annotation.Autowired;
     "instructions"
 })
 @Generated("jsonschema2pojo")
-public class RecipeWrapper
-{
+public class RecipeWrapper {
     private Recipe recipe;
 
     @Autowired
     private RecipeRepository recipeRepository;
 
-    public Recipe getRecipe()
-    {
+    public Recipe getRecipe() {
         if(recipe != null)
             return recipe;
 
@@ -46,8 +44,7 @@ public class RecipeWrapper
         recipe.setVersion(version);
 
         // Add ingredients to the recipe
-        ingredients.forEach(ingredient ->
-        {
+        ingredients.forEach(ingredient -> {
             recipe.addIngredient(ingredient);
         });
 
@@ -55,8 +52,7 @@ public class RecipeWrapper
         return recipe;
     }
 
-    public Recipe getRecipe(Long recipeId)
-    {
+    public Recipe getRecipe(Long recipeId) {
         if(recipe != null)
             return recipe;
 
@@ -67,15 +63,13 @@ public class RecipeWrapper
 
         // Add ingredients to the recipe
         recipe.getIngredients().clear();
-        ingredients.forEach(ingredient ->
-        {
+        ingredients.forEach(ingredient -> {
             recipe.addIngredient(ingredient);
         });
 
         // Add recipe to each instruction
 
-        instructions.forEach(instruction ->
-        {
+        instructions.forEach(instruction -> {
             instruction.setRecipe(recipe);
         });
 

@@ -1,7 +1,7 @@
 import * as urls from './urls.js';
 
 let recipeList = document.querySelector('#recipe-list');
-let addRecipeButton = document.querySelector('#add-recipe-button');
+let addRecipeButton = document.querySelector('#add-recipe-btn');
 
 // Go to add page when user selects add button
 addRecipeButton.addEventListener('click', e => {
@@ -45,8 +45,7 @@ function updateList() {
 function MakeRecipeRow(index, recipeId, recipeName) {
     // Could also start with a template and access via .content rather than .firstElementChild, but some old browser do not support it
     let row = document.createElement('div');
-    row.innerHTML = `<button class="recipe-select text-left" id="recipe-${recipeId}">${index+1}. ${recipeName}</button><button class="fas fa-trash-alt button delete-btn" id="delete-${recipeId}"></button>`;
-    //`<div class="d-flex"><button class="btn btn btn-outline-primary text-start mb-2 p-3 container-fluid" id="recipe-${recipeId}"><span>${index+1}. ${recipeName}</span></button><button class="btn btn-outline-primary text-start mx-1 mb-2 p-3 fas fa-trash-alt" id="delete-${recipeId}"></button></div>`;
+    row.innerHTML = `<button class="gradient-btn text-left" id="recipe-${recipeId}">${index+1}. ${recipeName}</button><button class="delete-btn" id="delete-${recipeId}"><span id="delete-icon" class="fas fa-trash-can"></span></button>`;
     return row;
 }
 

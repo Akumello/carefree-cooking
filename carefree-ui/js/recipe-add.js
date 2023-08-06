@@ -1,5 +1,6 @@
 // Bugs:
 // Need to adjust edit to only work on one at a time
+// font awesome not working when paired with font-family css
 
 import { Recipe } from "./recipe.js";
 import * as urls from "./urls.js";
@@ -20,17 +21,18 @@ if (recipeId == null)
 
 /*********** HTML Elements ***********/
 let recipeNameInput = document.querySelector('#recipe-name');
+recipeNameInput.value = recipeName; // Remove for production
 
 let ingredientListElem = document.querySelector('#ingredient-list');
 let addIngredientTextArea = document.querySelector('#add-ingredient-input');
-let addIngredientButton = document.querySelector('#add-ingredient-button');
+let addIngredientButton = document.querySelector('#add-ingredient-btn');
 
 let instructionListElem = document.querySelector('#instruction-list');
 let addInstructionTextArea = document.querySelector('#add-instruction-input');
-let addInstructionButton = document.querySelector('#add-instruction-button');
+let addInstructionButton = document.querySelector('#add-instruction-btn');
 
-let saveButton = document.querySelector('#save-button');
-let cancelButton = document.querySelector('#cancel-button');
+let saveButton = document.querySelector('#save-btn');
+let cancelButton = document.querySelector('#cancel-btn');
 /*************************************/
 
 if(recipeId) {
@@ -96,15 +98,15 @@ function createListItem(text, id) {
     let li = document.createElement('li');
     li.setAttribute('id', `li-${id}`);
     li.classList.add('border-bottom');
-    li.innerHTML = `<div class="flex-display"><div class="flex-1">${text}</div><input type="text" value="${text}" id="input-${id}" class="flex-1 d-none"><div style="cursor: pointer;"><i class="fas fa-edit li-buttons"></i><i class="fas fa-save li-buttons d-none"></i><i class="fas fa-trash-alt li-buttons"></i></div></div>`;
+    li.innerHTML = `<div class="flex-display"><div class="flex-1">${text}</div><input type="text" value="${text}" id="input-${id}" class="flex-1 d-none"><div style="cursor: pointer;"><i class="fas fa-edit li-btn"></i><i class="fas fa-save li-btn d-none"></i><i class="fas fa-trash-alt li-btn"></i></div></div>`;
        /*
             <div class="flex-display">
                 <div class="flex-1">${text}</div>
                 <input type="text" value="${text}" id="input-${id}" class="flex-1 d-none">
                 <div>
-                    <i class="fas fa-edit li-buttons"></i>
-                    <i class="fas fa-save li-buttons d-none"></i>
-                    <i class="fas fa-trash-alt li-buttons"></i>
+                    <i class="fas fa-edit li-btn"></i>
+                    <i class="fas fa-save li-btn d-none"></i>
+                    <i class="fas fa-trash-alt li-btn"></i>
                 </div>
             </div>
        */
@@ -258,10 +260,8 @@ saveButton.addEventListener('click', e => {
     if(infoMissing)
         return;
 
-    // Make json
-    let recipeJSON = getRecipeJSON();
-
     // Send request
+    let recipeJSON = getRecipeJSON();
     let resourceUrl = `http://localhost:8080/recipe/saveAll/${recipeId}`;
     let sendResult = sendRecipe(resourceUrl, recipeJSON);
 

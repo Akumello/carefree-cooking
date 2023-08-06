@@ -1,8 +1,8 @@
 import { Recipe } from "./recipe.js";
 import * as urls from "./urls.js";
 
-let backButton = document.querySelector('#back-button');
-let editButton = document.querySelector('#edit-button');
+let backButton = document.querySelector('#back-btn');
+let editButton = document.querySelector('#edit-btn');
 let recipeHeader = document.querySelector('#recipe-title');
 let ingredientListHtml = document.querySelector('#ingredient-list');
 let stepListHtml = document.querySelector('#step-list');
