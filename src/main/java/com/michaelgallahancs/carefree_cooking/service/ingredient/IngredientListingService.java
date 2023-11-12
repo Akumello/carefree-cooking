@@ -14,13 +14,15 @@ public class IngredientListingService
     @Autowired
     private IngredientRepository ingredientRepository;
 
-    public List<Ingredient> retrieveAllIngredients()
-    {
+    public List<Ingredient> retrieveAllIngredients() {
         return ingredientRepository.findAll();
     }
 
-    public List<Ingredient> retrieveIngredients(Long recipeId)
-    {
-        return ingredientRepository.findByRecipes_Id(recipeId);
+    public List<Ingredient> retrieveIngredients(Long recipeId) {
+        return ingredientRepository.findByRecipes_IdOrderById(recipeId);
+    }
+
+    public Ingredient retrieveIngredientByName(String name) {
+        return ingredientRepository.findByName(name);
     }
 }

@@ -16,15 +16,13 @@ public class StepListingController
 
     @CrossOrigin
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<Step> listAllSteps()
-    {
+    public List<Step> listAllSteps() {
         return stepListingService.retrieveAllSteps();
     }
 
     @CrossOrigin
     @RequestMapping(value = "/{recipeId}", method = RequestMethod.GET)
-    public List<Step> listStep(@PathVariable Long recipeId)
-    {
+    public List<Step> listStep(@PathVariable Long recipeId) {
         return stepListingService.retrieveSteps(recipeId);
     }
 }

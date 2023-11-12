@@ -15,14 +15,16 @@ public class StepListingService {
     @Autowired
     private StepRepository stepRepository;
 
-    public List<Step> retrieveAllSteps()
-    {
+    public List<Step> retrieveAllSteps() {
         return stepRepository.findAll();
     }
 
-    public List<Step> retrieveSteps(Long recipeId)
-    {
+    public List<Step> retrieveAllSteps(Long recipeId) {
         return stepRepository.findAllByRecipe_Id(recipeId);
+    }
+
+    public List<Step> retrieveSteps(Long recipeId) {
+        return stepRepository.findByRecipeIdOrderByStepNumberAsc(recipeId);
                 //.orElseThrow(() -> new EntityNotFoundException(recipeId.toString()));
     }
 }

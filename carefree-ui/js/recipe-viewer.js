@@ -23,7 +23,7 @@ if(recipeId) {
     let recipeData = requestRecipeData(`http://localhost:8080/recipe/listing/${recipeId}`);
     recipeData.then(recipeFromDb => {
         // RECIPE METADATA
-        const recipe = new Recipe(recipeFromDb.name, recipeFromDb.category, recipeFromDb.version);
+        const recipe = new Recipe(recipeId, recipeFromDb.name, recipeFromDb.category, recipeFromDb.version);
         recipeHeader.textContent = recipe.name;
 
         // INSTRUCTIONS

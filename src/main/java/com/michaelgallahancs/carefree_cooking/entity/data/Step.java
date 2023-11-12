@@ -31,6 +31,7 @@ public class Step extends AbstractDomainEntity
     )
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    private int step_number;
+    @Column(name = "step_number")
+    private int stepNumber;
     private String instruction;
 }

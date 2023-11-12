@@ -45,7 +45,7 @@ function updateList() {
 function MakeRecipeRow(index, recipeId, recipeName) {
     // Could also start with a template and access via .content rather than .firstElementChild, but some old browser do not support it
     let row = document.createElement('div');
-    row.innerHTML = `<button class="gradient-btn text-left" id="recipe-${recipeId}">${index+1}. ${recipeName}</button><button class="delete-btn" id="delete-${recipeId}"><span id="delete-icon" class="fas fa-trash-can"></span></button>`;
+    row.innerHTML = `<button class="gradient-btn text-left" id="recipe-${recipeId}">${index+1}.&nbsp;&nbsp;&nbsp;${recipeName}</button><button class="delete-btn fas fa-trash-can" id="delete-${recipeId}"></button>`;
     return row;
 }
 

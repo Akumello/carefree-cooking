@@ -15,8 +15,7 @@ public class StepSaveController {
     private StepSaveService stepSaveService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Step saveStep(@RequestBody Step step)
-    {
+    public Step saveStep(@RequestBody Step step) {
         return stepSaveService.save(step);
     }
 }

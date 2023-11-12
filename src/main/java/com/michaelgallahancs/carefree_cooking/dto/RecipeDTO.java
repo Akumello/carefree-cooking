@@ -1,5 +1,5 @@
 
-package com.michaelgallahancs.carefree_cooking.data;
+package com.michaelgallahancs.carefree_cooking.dto;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +15,7 @@ import com.michaelgallahancs.carefree_cooking.entity.data.Ingredient;
 import com.michaelgallahancs.carefree_cooking.entity.data.Recipe;
 import com.michaelgallahancs.carefree_cooking.entity.data.Step;
 import com.michaelgallahancs.carefree_cooking.repository.RecipeRepository;
-import com.michaelgallahancs.carefree_cooking.service.recipe.RecipeSaveService;
-import com.michaelgallahancs.carefree_cooking.service.step.StepSaveService;
+import com.michaelgallahancs.carefree_cooking.service.ingredient.IngredientListingService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -28,11 +27,14 @@ import org.springframework.beans.factory.annotation.Autowired;
     "instructions"
 })
 @Generated("jsonschema2pojo")
-public class RecipeWrapper {
+public class RecipeDTO {
     private Recipe recipe;
 
     @Autowired
     private RecipeRepository recipeRepository;
+
+    @Autowired
+    private IngredientListingService ingredientService;
 
     public Recipe getRecipe() {
         if(recipe != null)
@@ -45,7 +47,11 @@ public class RecipeWrapper {
 
         // Add ingredients to the recipe
         ingredients.forEach(ingredient -> {
-            recipe.addIngredient(ingredient);
+            //Ingredient toAdd = ingredientService.retrieveIngredientByName(ingredient.getName());
+            //if (toAdd == null)
+                recipe.addIngredient(ingredient);
+            //else
+                //recipe.addIngredient(toAdd);
         });
 
         //Was adding recipe to each instruction, but that needs to be done after the recipe is saved and assigned an id.
@@ -68,7 +74,6 @@ public class RecipeWrapper {
         });
 
         // Add recipe to each instruction
-
         instructions.forEach(instruction -> {
             instruction.setRecipe(recipe);
         });
@@ -131,10 +136,8 @@ public class RecipeWrapper {
 
     // A step must have a recipe, so the recipe must be provided
     @JsonProperty("instructions")
-    public List<Step> getInstructions(Recipe recipe)
-    {
-        instructions.forEach(instruction ->
-        {
+    public List<Step> getInstructions(Recipe recipe) {
+        instructions.forEach(instruction -> {
             instruction.setRecipe(recipe);
         });
         return instructions;

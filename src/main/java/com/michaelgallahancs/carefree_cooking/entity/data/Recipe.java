@@ -34,6 +34,10 @@ public class Recipe extends AbstractDomainEntity {
     )
     private List<Ingredient> ingredients = new ArrayList<Ingredient>();
 
+    public void setIngredients(List<Ingredient> newIngredients) {
+        ingredients = newIngredients;
+    }
+
     public void addIngredient(Ingredient ingredient)
     {
         ingredients.add(ingredient);

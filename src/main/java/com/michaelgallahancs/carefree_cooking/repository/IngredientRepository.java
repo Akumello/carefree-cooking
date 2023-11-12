@@ -14,6 +14,8 @@ public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
 
     List<Ingredient> findByRecipes_Id(Long recipeId);
 
+    List<Ingredient> findByRecipes_IdOrderById(Long recipeId);
+
     @Transactional
     void deleteById(Long id);
 }

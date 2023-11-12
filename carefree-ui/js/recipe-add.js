@@ -9,7 +9,19 @@ import * as urls from "./urls.js";
 let recipeName = 'Mexican Rice';
 let category = 'Mexican';
 let version = '1.0';
+
+let ingredientMap = new Map([[1, 'Jasmine Rice'], 
+    [2, 'Tomato'], 
+    [3, 'Onion']]
+);
 let ingredientList = ['Jasmine Rice', 'Tomato', 'Onion'];
+
+let instructionMap = new Map([[1, 'Blend onion, garlic, tomatoes, salt, and chicken boullion'],
+    [2, 'Toast rice in oil over medium heat for about 7 mins until slightly golden.'],
+    [3, 'Added blended mixture to toasted rice'],
+    [4, 'Bring to a boil. Give one last stir, reduce heat to low, cover with lid and simmer for 15 mins.'],
+    [5, 'Fluff rice and let rest for another 10 minutes before serving.']]
+);
 let instructionList = ['Blend onion, garlic, tomatoes, salt, and chicken boullion', 'Toast rice in oil over medium heat for about 7 mins until slightly golden.', 'Added blended mixture to toasted rice', 'Bring to a boil. Give one last stir, reduce heat to low, cover with lid and simmer for 15 mins.', 'Fluff rice and let rest for another 10 minutes before serving.'];
 /*************************************/
 
@@ -35,43 +47,6 @@ let saveButton = document.querySelector('#save-btn');
 let cancelButton = document.querySelector('#cancel-btn');
 /*************************************/
 
-if(recipeId) {
-    // fetch recipe info
-    // Pull recipe data from DB
-    let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/${recipeId}`);
-    recipeData.then(recipeFromDb => {
-        let recipe = new Recipe(recipeFromDb.name, recipeFromDb.category, recipeFromDb.version);
-        recipeName = recipe.name;
-        recipeNameInput.value = recipeName;
-        category = recipe.category;
-        version = recipe.version;
-
-        let steps = requestRecipes(`http://localhost:8080/step/listing/${recipeId}`);
-        steps.then(steps => {
-            instructionList = [];
-
-            steps.forEach(step => {
-                instructionList.push(step.instruction);
-                
-            });
-
-            // ingredints code
-            let ingredients = requestRecipes(`http://localhost:8080/ingredient/listing/${recipeId}`);
-            ingredients.then(ingredients => {
-                ingredientList = [];
-                ingredients.forEach(ingredient => 
-                {
-                    ingredientList.push(ingredient.name);
-                    
-                });
-                console.log(ingredientList);
-                updateListElement(ingredientList, ingredientListElem);
-                updateListElement(instructionList, instructionListElem);
-            });
-        });
-    });
-}
-
 // updateListElement(ingredientList)
 // run createlistitem on each elem of the main array
 // set the innertext of ul to the generated html data
@@ -81,7 +56,7 @@ function updateListElement(list, listHtmlElem) {
         listHtmlElem.removeChild(listHtmlElem.firstChild);
 
     // Display the todo list
-    let newList = [...list];
+    let newList = Array.from(list.values());
     let i = 0;
     list.forEach(item => {
         if(item === newList[0]) {
@@ -114,7 +89,7 @@ function createListItem(text, id) {
     return li;
 }
 
-function addItem(list, listHtmlElem, textAreaToClear) {
+function addItem(itemMap, listHtmlElem, textAreaToClear) {
     // Skip if user entered nothing
     const item = textAreaToClear.value;
     if(!item) { return; }
@@ -123,29 +98,32 @@ function addItem(list, listHtmlElem, textAreaToClear) {
         textAreaToClear.classList.remove('border-error');
 
     textAreaToClear.value = '';
-    list.push(item);
-    updateListElement(list, listHtmlElem);
+
+    let keysList = Array.from(itemMap.keys());
+    const nextKey = keysList[keysList.length - 1] + 1;
+    itemMap.set(nextKey, item);
+    updateListElement(itemMap, listHtmlElem);
 }
 
 // Run addItem when the add item button is clicked or the user hits enter inside the text area
 addIngredientButton.addEventListener('click', () => {
-        addItem(ingredientList, ingredientListElem, addIngredientTextArea)
+        addItem(ingredientMap, ingredientListElem, addIngredientTextArea)
 });
 
 addIngredientTextArea.addEventListener('keyup', e => {
     if(e.keyCode === 13) {
-        addItem(ingredientList, ingredientListElem, addIngredientTextArea);
+        addItem(ingredientMap, ingredientListElem, addIngredientTextArea);
     }
 });
 
 // Run addItem when the add item button is clicked or the user hits enter inside the text area
 addInstructionButton.addEventListener('click', () => {
-        addItem(instructionList, instructionListElem, addInstructionTextArea);
+        addItem(instructionMap, instructionListElem, addInstructionTextArea);
 }
 );
 addInstructionTextArea.addEventListener('keyup', e => {
     if(e.keyCode === 13) {
-        addItem(instructionList, instructionListElem, addInstructionTextArea);
+        addItem(instructionMap, instructionListElem, addInstructionTextArea);
     }
 });
 
@@ -162,32 +140,34 @@ recipeNameInput.addEventListener('keyup', e => {
         recipeNameInput.blur();
 });
 
-function deleteItem(clicked, list, listHtmlElem) {
+function deleteItem(clicked, itemMap, listHtmlElem) {
     // Get index of the item to remove
     const num = /\d+/;
     const index = clicked.parentNode.parentNode.parentNode.id.match(num);
+    let key = Array.from(itemMap.keys())[index];
 
-    // Remove the item from the todo list
-    list.splice(index, 1);
+    // Remove the item from the item map
+    itemMap.delete(key);
 
-    updateListElement(list, listHtmlElem);
+    updateListElement(itemMap, listHtmlElem);
 }
 
-function saveItem(clicked, list, listHtmlElem) {
+function saveItem(clicked, itemMap, listHtmlElem) {
     // Get index of the item to edit
     const num = /\d+/;
     const liElement = clicked.parentNode.parentNode.parentNode;
     const index = liElement.id.match(num);
+    let key = Array.from(itemMap.keys())[index];
 
-    // Remove the item from the todo list
-    let newListEntry = liElement.querySelector(`#input-${index}`).value;
-    // extract newListEntry from the input field
-    list.splice(index, 1, `${newListEntry}`);
+    // Get the new item entered by the user
+    let newItem = liElement.querySelector(`#input-${index}`).value;
+    
+    itemMap.set(key, newItem);
 
-    updateListElement(list, listHtmlElem);
+    updateListElement(itemMap, listHtmlElem);
 }
 
-function editItem(clicked, list, listHtmlElem) {
+function editItem(clicked, itemMap, listHtmlElem) {
     // Switch the sibling div to an input text field and change edit button to a save button
     clicked.classList.add('d-none');
     clicked.nextSibling.classList.remove('d-none');
@@ -202,7 +182,7 @@ function editItem(clicked, list, listHtmlElem) {
     itemNameUnlocked.select();
     itemNameUnlocked.addEventListener('keyup', e => {
         if(e.keyCode === 13) {
-            saveItem(clicked, list, listHtmlElem);
+            saveItem(clicked, itemMap, listHtmlElem);
         }
     });
 }
@@ -211,29 +191,29 @@ function editItem(clicked, list, listHtmlElem) {
 ingredientListElem.addEventListener('click', e => {
     // Delete button
     if(e.target.classList.contains('fa-trash-alt'))
-        deleteItem(e.target, ingredientList, ingredientListElem);
+        deleteItem(e.target, ingredientMap, ingredientListElem);
 
     // Save button
     if(e.target.classList.contains('fa-save'))
-        saveItem(e.target, ingredientList, ingredientListElem);
+        saveItem(e.target, ingredientMap, ingredientListElem);
 
     // Edit button
     if(e.target.classList.contains('fa-edit'))
-        editItem(e.target, ingredientList, ingredientListElem);
+        editItem(e.target, ingredientMap, ingredientListElem);
 });
 
 instructionListElem.addEventListener('click', e => {
     // Delete button
     if(e.target.classList.contains('fa-trash-alt'))
-        deleteItem(e.target, instructionList, instructionListElem);
+        deleteItem(e.target, instructionMap, instructionListElem);
 
     // Save button
     if(e.target.classList.contains('fa-save'))
-        saveItem(e.target, instructionList, instructionListElem);
+        saveItem(e.target, instructionMap, instructionListElem);
 
     // Edit button
     if(e.target.classList.contains('fa-edit'))
-        editItem(e.target, instructionList, instructionListElem);
+        editItem(e.target, instructionMap, instructionListElem);
 });
 
 saveButton.addEventListener('click', e => {
@@ -246,14 +226,14 @@ saveButton.addEventListener('click', e => {
     }
 
     // Check for at least one ingredient
-    if (ingredientList.length == 0) {
+    if (ingredientMap.length == 0) {
         addIngredientTextArea.classList.add('border-error');
         infoMissing = true;
     }
 
     // Check for at least one instruction
     // infoMissing not set because instructions are not a requirement
-    if (instructionList.length == 0)
+    if (instructionMap.length == 0)
         addInstructionTextArea.classList.add('border-error');
 
     // Cancel operation if the user is missing required data
@@ -275,7 +255,7 @@ cancelButton.addEventListener('click', e => {
     window.open(urls.recipeMenuUrl, '_self');
 });
 
-function requestRecipes(resourceUrl) {
+function requestRecipe(resourceUrl) {
     let GetRecipe = async () => {
         let response = await fetch(resourceUrl, {
             method: 'GET',
@@ -303,16 +283,66 @@ function sendRecipe(resourceUrl, recipe) {
 }
 
 function getRecipeJSON() {
+    let ingredients = [];
+    let instructions = [];
+
+    ingredientMap.forEach((name, id) => {
+        ingredients.push({name: name, id: id});
+    });
+
+    let i = 0;
+    instructionMap.forEach((instruction, id) => {
+        instructions.push({instruction: instruction, id: id, step_number: i+1});
+        i++;
+    });
+
     return JSON.stringify({
             'name': recipeName, 
             'category': category, 
             'version': version,
-            'ingredients': ingredientList.map((ingredient,i) => ({name: ingredient})),
-            'instructions': instructionList.map((instruction,i) => ({step_number: i+1, instruction: instruction}))
+            'ingredients': ingredients,
+            'instructions': instructions
         }
     );
 }
 
-updateListElement(ingredientList, ingredientListElem);
-updateListElement(instructionList, instructionListElem);
-getRecipeJSON();
+
+// ######## Execution #########
+if(recipeId) {
+    // fetch recipe info
+    // Pull recipe data from DB
+    let recipeData = requestRecipe(`http://localhost:8080/recipe/listing/${recipeId}`);
+    recipeData.then(recipeFromDb => {
+        let recipe = new Recipe(recipeId, recipeFromDb.name, recipeFromDb.category, recipeFromDb.version);
+        recipeName = recipe.name;
+        recipeNameInput.value = recipeName;
+        category = recipe.category;
+        version = recipe.version;
+
+        let dbIntructions = requestRecipe(`http://localhost:8080/step/listing/${recipeId}`);
+        dbIntructions.then(dbIntructions => {
+            instructionMap.clear();
+            dbIntructions.forEach(dbInstrucion => {
+                instructionMap.set(dbInstrucion.id, dbInstrucion.instruction);
+            });
+
+            // ingredints code
+            let dbIngredients = requestRecipe(`http://localhost:8080/ingredient/listing/${recipeId}`);
+            dbIngredients.then(dbIngredients => {
+                ingredientMap.clear();
+                dbIngredients.forEach(dbIngredient => {
+                    ingredientMap.set(dbIngredient.id, dbIngredient.name);
+                });
+
+                updateListElement(ingredientMap, ingredientListElem);
+                updateListElement(instructionMap, instructionListElem);
+
+                console.log(getRecipeJSON());
+            });
+        });
+    });
+} else {
+    updateListElement(ingredientMap, ingredientListElem);
+    updateListElement(instructionMap, instructionListElem);
+    console.log(getRecipeJSON());
+}

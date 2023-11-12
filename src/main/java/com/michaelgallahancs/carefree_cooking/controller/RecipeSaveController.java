@@ -1,17 +1,20 @@
 package com.michaelgallahancs.carefree_cooking.controller;
 
-import com.michaelgallahancs.carefree_cooking.data.RecipeWrapper;
+import com.michaelgallahancs.carefree_cooking.dto.RecipeDTO;
 import com.michaelgallahancs.carefree_cooking.entity.data.Ingredient;
 import com.michaelgallahancs.carefree_cooking.entity.data.Recipe;
 import com.michaelgallahancs.carefree_cooking.entity.data.Step;
 import com.michaelgallahancs.carefree_cooking.repository.RecipeRepository;
 import com.michaelgallahancs.carefree_cooking.repository.StepRepository;
+import com.michaelgallahancs.carefree_cooking.service.ingredient.IngredientListingService;
+import com.michaelgallahancs.carefree_cooking.service.ingredient.IngredientSaveService;
+import com.michaelgallahancs.carefree_cooking.service.recipe.RecipeListingService;
 import com.michaelgallahancs.carefree_cooking.service.recipe.RecipeSaveService;
+import com.michaelgallahancs.carefree_cooking.service.step.StepListingService;
 import com.michaelgallahancs.carefree_cooking.service.step.StepSaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.nio.file.Path;
 import java.util.List;
 
 @RestController
@@ -20,11 +23,19 @@ public class RecipeSaveController {
     @Autowired
     private RecipeSaveService recipeSaveService;
     @Autowired
+    private RecipeListingService recipeListingService;
+    @Autowired
     private StepSaveService stepSaveService;
+    @Autowired
+    private StepListingService stepListingService;
+
+    @Autowired
+    private IngredientSaveService ingredientSaveService;
+    @Autowired
+    private IngredientListingService ingredientListingService;
 
     @Autowired
     private RecipeRepository recipeRepository;
-
     @Autowired
     private StepRepository stepRepository;
 
@@ -36,7 +47,7 @@ public class RecipeSaveController {
 
     @CrossOrigin
     @PostMapping(value = "/saveAll")
-    public Recipe saveRecipe(@RequestBody RecipeWrapper recipe)
+    public Recipe saveNewRecipe(@RequestBody RecipeDTO recipe)
     {
         // TODO Make comments and only save ingredients that are not duplicate
         // GetRecipe returns a ready to commit recipe without steps
@@ -52,19 +63,11 @@ public class RecipeSaveController {
 
     @CrossOrigin
     @PostMapping(value = "/saveAll/{recipeId}")
-    public Recipe saveRecipe(@RequestBody RecipeWrapper recipeToSave, @PathVariable Long recipeId) {
+    public Recipe updateRecipe(@RequestBody RecipeDTO recipeToSave, @PathVariable Long recipeId) {
         // TODO Make comments and only save ingredients that are not duplicate
-        Recipe recipe = recipeRepository.getById(recipeId);
-        recipe.setName(recipeToSave.getName());
-        recipe.setVersion(recipeToSave.getVersion());
-        recipe.setCategory(recipeToSave.getCategory());
-        recipe.setIngredients(recipeToSave.getIngredients());
-        recipeSaveService.save(recipe);
-
-        stepRepository.deleteAllByRecipe_Id(recipeId);
-        List<Step> steps = recipeToSave.getInstructions(recipe);
-        steps.forEach(step -> { stepSaveService.save(step); });
-
+        Recipe recipe = recipeSaveService.update(recipeId, recipeToSave);
+        System.out.println("\n\n" + recipeToSave.getInstructions(recipe) + "\n\n");
+        stepSaveService.saveAll(recipeId, recipeToSave.getInstructions(recipe));
         return recipe;
     }
 
