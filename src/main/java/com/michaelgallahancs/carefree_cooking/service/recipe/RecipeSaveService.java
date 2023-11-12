@@ -79,14 +79,14 @@ public class RecipeSaveService {
         return null;
     }
 
-    public Recipe createNewRecipeFromDTO(RecipeDTO recipeDTO) {
+    public Recipe save(RecipeDTO recipeDTO) {
         Recipe recipe = new Recipe();
         recipe.setName(recipeDTO.getName());
         recipe.setCategory(recipeDTO.getCategory());
         recipe.setVersion(recipeDTO.getVersion());
+        Recipe finalRecipe = save(recipe);
 
         // Add ingredients to the recipe
-        Recipe finalRecipe = recipe;
         recipeDTO.getIngredients().forEach(newIngredient -> {
             Ingredient ingredientFromDb = ingredientListingService.retrieveIngredientByName(newIngredient.getName());
             if (ingredientFromDb != null)
@@ -95,12 +95,8 @@ public class RecipeSaveService {
                 finalRecipe.addIngredient(newIngredient);
         });
 
-        // Add recipe to each instruction
-        recipeDTO.getInstructions().forEach(instruction -> {
-            instruction.setRecipe(recipe);
-        });
-
+        System.out.println("\n\n" + recipe.toString());
         //Was adding recipe to each instruction, but that needs to be done after the recipe is saved and assigned an id.
-        return finalRecipe;
+        return recipe;
     }
 }
