@@ -79,7 +79,7 @@ public class RecipeSaveService {
         return null;
     }
 
-    private Recipe createNewRecipeFromDTO(RecipeDTO recipeDTO) {
+    public Recipe createNewRecipeFromDTO(RecipeDTO recipeDTO) {
         Recipe recipe = new Recipe();
         recipe.setName(recipeDTO.getName());
         recipe.setCategory(recipeDTO.getCategory());
@@ -96,7 +96,7 @@ public class RecipeSaveService {
         });
 
         // Add recipe to each instruction
-        recipeDTO.getInstructions(recipe).forEach(instruction -> {
+        recipeDTO.getInstructions().forEach(instruction -> {
             instruction.setRecipe(recipe);
         });
 

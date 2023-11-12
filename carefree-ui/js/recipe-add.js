@@ -242,12 +242,13 @@ saveButton.addEventListener('click', e => {
 
     // Send request
     let recipeJSON = getRecipeJSON();
+    console.log(recipeJSON);
     let resourceUrl = `http://localhost:8080/recipe/saveAll/${recipeId}`;
     let sendResult = sendRecipe(resourceUrl, recipeJSON);
 
     // Go to recipe view on success
     sendResult.then(result => {
-        window.open(urls.recipeMenuUrl, '_self');
+        window.open(urls.recipeViewerUrl + `?recipe=${recipeId}`, '_self');
     });
 });
 

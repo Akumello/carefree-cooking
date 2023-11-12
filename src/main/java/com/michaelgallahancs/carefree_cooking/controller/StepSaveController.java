@@ -1,5 +1,6 @@
 package com.michaelgallahancs.carefree_cooking.controller;
 
+import com.michaelgallahancs.carefree_cooking.entity.data.Recipe;
 import com.michaelgallahancs.carefree_cooking.entity.data.Step;
 import com.michaelgallahancs.carefree_cooking.service.step.StepSaveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class StepSaveController {
     private StepSaveService stepSaveService;
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public Step saveStep(@RequestBody Step step) {
-        return stepSaveService.save(step);
+    public Step saveStep(@RequestBody Step step, @RequestBody Recipe recipe) {
+        return stepSaveService.save(recipe, step);
     }
 }

@@ -1,6 +1,7 @@
 package com.michaelgallahancs.carefree_cooking.entity.data;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.michaelgallahancs.carefree_cooking.entity.AbstractDomainEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,7 @@ public class Step extends AbstractDomainEntity
     )
     private List<Ingredient> ingredients = new ArrayList<>();
 
+    @JsonProperty("step_number")
     @Column(name = "step_number")
     private int stepNumber;
     private String instruction;

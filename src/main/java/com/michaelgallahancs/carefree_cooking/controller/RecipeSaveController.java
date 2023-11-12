@@ -47,18 +47,12 @@ public class RecipeSaveController {
 
     @CrossOrigin
     @PostMapping(value = "/saveAll")
-    public Recipe saveNewRecipe(@RequestBody RecipeDTO recipe)
-    {
+    public Recipe saveNewRecipe(@RequestBody RecipeDTO recipeToSave) {
         // TODO Make comments and only save ingredients that are not duplicate
-        // GetRecipe returns a ready to commit recipe without steps
-        Recipe unwrappedRecipe = recipe.getRecipe();
-        List<Step> steps;
-
-        recipeSaveService.save(unwrappedRecipe);
-        steps = recipe.getInstructions(unwrappedRecipe);
-        steps.forEach(step -> { stepSaveService.save(step); });
-
-        return unwrappedRecipe;
+        Recipe recipe = recipeSaveService.createNewRecipeFromDTO(recipeToSave);
+        recipeSaveService.save(recipe);
+        stepSaveService.saveAll(recipe, recipeToSave.getInstructions());
+        return recipe;
     }
 
     @CrossOrigin
@@ -66,16 +60,14 @@ public class RecipeSaveController {
     public Recipe updateRecipe(@RequestBody RecipeDTO recipeToSave, @PathVariable Long recipeId) {
         // TODO Make comments and only save ingredients that are not duplicate
         Recipe recipe = recipeSaveService.update(recipeId, recipeToSave);
-        System.out.println("\n\n" + recipeToSave.getInstructions(recipe) + "\n\n");
-        stepSaveService.saveAll(recipeId, recipeToSave.getInstructions(recipe));
+        stepSaveService.saveAll(recipe, recipeToSave.getInstructions());
         return recipe;
     }
 
     @PutMapping(value = "/{recipeId}/ingredient/{ingredientId}/amount/{amount}")
     public Recipe saveIngredientToRecipe(@PathVariable Long recipeId,
                                          @PathVariable Long ingredientId,
-                                         @PathVariable Long amount
-    ) {
+                                         @PathVariable Long amount) {
         return recipeSaveService.saveIngredientToRecipe(recipeId, ingredientId);
     }
 }

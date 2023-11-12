@@ -12,11 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.michaelgallahancs.carefree_cooking.entity.data.Ingredient;
-import com.michaelgallahancs.carefree_cooking.entity.data.Recipe;
 import com.michaelgallahancs.carefree_cooking.entity.data.Step;
-import com.michaelgallahancs.carefree_cooking.repository.RecipeRepository;
-import com.michaelgallahancs.carefree_cooking.service.ingredient.IngredientListingService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -28,59 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 })
 @Generated("jsonschema2pojo")
 public class RecipeDTO {
-    private Recipe recipe;
-
-    @Autowired
-    private RecipeRepository recipeRepository;
-
-    @Autowired
-    private IngredientListingService ingredientService;
-
-    public Recipe getRecipe() {
-        if(recipe != null)
-            return recipe;
-
-        recipe = new Recipe();
-        recipe.setName(name);
-        recipe.setCategory(category);
-        recipe.setVersion(version);
-
-        // Add ingredients to the recipe
-        ingredients.forEach(ingredient -> {
-            //Ingredient toAdd = ingredientService.retrieveIngredientByName(ingredient.getName());
-            //if (toAdd == null)
-                recipe.addIngredient(ingredient);
-            //else
-                //recipe.addIngredient(toAdd);
-        });
-
-        //Was adding recipe to each instruction, but that needs to be done after the recipe is saved and assigned an id.
-        return recipe;
-    }
-
-    public Recipe getRecipe(Long recipeId) {
-        if(recipe != null)
-            return recipe;
-
-        recipe = recipeRepository.getById(recipeId);
-        recipe.setName(name);
-        recipe.setCategory(category);
-        recipe.setVersion(version);
-
-        // Add ingredients to the recipe
-        recipe.getIngredients().clear();
-        ingredients.forEach(ingredient -> {
-            recipe.addIngredient(ingredient);
-        });
-
-        // Add recipe to each instruction
-        instructions.forEach(instruction -> {
-            instruction.setRecipe(recipe);
-        });
-
-        return recipe;
-    }
-
     @JsonProperty("name")
     private String name;
     @JsonProperty("category")
@@ -134,14 +77,8 @@ public class RecipeDTO {
         this.ingredients = ingredients;
     }
 
-    // A step must have a recipe, so the recipe must be provided
     @JsonProperty("instructions")
-    public List<Step> getInstructions(Recipe recipe) {
-        instructions.forEach(instruction -> {
-            instruction.setRecipe(recipe);
-        });
-        return instructions;
-    }
+    public List<Step> getInstructions() { return instructions; }
 
     @JsonProperty("instructions")
     public void setInstructions(List<Step> instructions) {
