@@ -95,8 +95,8 @@ public class RecipeSaveService {
                 finalRecipe.addIngredient(newIngredient);
         });
 
-        System.out.println("\n\n" + recipe.toString());
+        //System.out.println("\n\n" + recipe.toString());
         //Was adding recipe to each instruction, but that needs to be done after the recipe is saved and assigned an id.
-        return recipe;
+        return save(finalRecipe);
     }
 }

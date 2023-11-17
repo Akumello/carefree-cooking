@@ -50,7 +50,6 @@ public class RecipeSaveController {
     public Recipe saveNewRecipe(@RequestBody RecipeDTO recipeToSave) {
         // TODO Make comments and only save ingredients that are not duplicate
         Recipe recipe = recipeSaveService.save(recipeToSave);
-        recipeSaveService.save(recipe);
         stepSaveService.saveAll(recipe, recipeToSave.getInstructions());
         return recipe;
     }
