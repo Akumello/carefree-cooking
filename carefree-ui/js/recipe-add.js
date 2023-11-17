@@ -242,13 +242,18 @@ saveButton.addEventListener('click', e => {
 
     // Send request
     let recipeJSON = getRecipeJSON();
-    console.log(recipeJSON);
     let resourceUrl = `http://localhost:8080/recipe/saveAll/${recipeId}`;
     let sendResult = sendRecipe(resourceUrl, recipeJSON);
 
     // Go to recipe view on success
     sendResult.then(result => {
-        window.open(urls.recipeViewerUrl + `?recipe=${recipeId}`, '_self');
+        if (recipeId == '') {
+            recipeId = result.id
+            window.open(urls.recipeViewerUrl + `?recipe=${recipeId}`, '_self');
+        }
+        else {
+            window.open(urls.recipeViewerUrl + `?recipe=${recipeId}`, '_self');
+        }
     });
 });
 
@@ -269,18 +274,26 @@ function requestRecipe(resourceUrl) {
     return GetRecipe();
 }
 
-function sendRecipe(resourceUrl, recipe) {
-    let GetInstructions = async () => {
+async function sendRecipe(resourceUrl, recipe) {
+    try {
         let response = await fetch(resourceUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: recipe
-        }); 
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
         let data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
     }
-    return GetInstructions();
 }
 
 function getRecipeJSON() {

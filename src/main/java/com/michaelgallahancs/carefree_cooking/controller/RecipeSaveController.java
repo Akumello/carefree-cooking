@@ -13,6 +13,7 @@ import com.michaelgallahancs.carefree_cooking.service.recipe.RecipeSaveService;
 import com.michaelgallahancs.carefree_cooking.service.step.StepListingService;
 import com.michaelgallahancs.carefree_cooking.service.step.StepSaveService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,8 +46,8 @@ public class RecipeSaveController {
         return recipeSaveService.save(recipe);
     }
 
-    @CrossOrigin
-    @PostMapping(value = "/saveAll")
+    @CrossOrigin()
+    @PostMapping(value = "/saveAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public Recipe saveNewRecipe(@RequestBody RecipeDTO recipeToSave) {
         // TODO Make comments and only save ingredients that are not duplicate
         Recipe recipe = recipeSaveService.save(recipeToSave);
@@ -57,7 +58,8 @@ public class RecipeSaveController {
     @CrossOrigin
     @PostMapping(value = "/saveAll/{recipeId}")
     public Recipe updateRecipe(@RequestBody RecipeDTO recipeToSave, @PathVariable Long recipeId) {
-        // TODO Make comments and only save ingredients that are not duplicate
+        // TODO Bug: if ingredient is shared, edit will change it for all recipes
+        // TODO Bug: When new ingredient is added, it takes the next id even if already taken and changes it
         Recipe recipe = recipeSaveService.update(recipeId, recipeToSave);
         stepSaveService.saveAll(recipe, recipeToSave.getInstructions());
         return recipe;

@@ -14,7 +14,7 @@ recipeList.addEventListener('click', e => {
     let clickType = e.target.id.split('-')[0];
     let recipeId = e.target.id.split('-')[1];
 
-    if(clickType === 'recipe') {
+    if(clickType === 'recipe' && recipeId != 'list') {
         // Open view page and send recipe id to it
         window.open(urls.recipeViewerUrl + '?recipe=' + encodeURIComponent(recipeId), '_self');
     }

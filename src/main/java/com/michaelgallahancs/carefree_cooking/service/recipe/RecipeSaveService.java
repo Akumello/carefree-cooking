@@ -95,8 +95,7 @@ public class RecipeSaveService {
                 finalRecipe.addIngredient(newIngredient);
         });
 
-        //System.out.println("\n\n" + recipe.toString());
-        //Was adding recipe to each instruction, but that needs to be done after the recipe is saved and assigned an id.
+        //Ingredients require the base recipe to exist before saving them
         return save(finalRecipe);
     }
 }
