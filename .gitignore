@@ -36,5 +36,11 @@ out/
 /.nb-gradle/
 
 ### VS Code ###
-.vscode/
+/src/main/static/.vscode/
 /src/main/resources/application.properties
+/src/main/resources/carefree-ui.code-workspace
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
