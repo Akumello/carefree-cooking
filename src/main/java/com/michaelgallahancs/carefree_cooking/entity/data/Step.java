@@ -23,15 +23,6 @@ public class Step extends AbstractDomainEntity
     @JoinColumn(name = "recipe_id", referencedColumnName = "id", nullable = false)
     private Recipe recipe;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable (
-            name = "step_ingredient",
-            joinColumns = @JoinColumn(name = "step_id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id")
-    )
-    private List<Ingredient> ingredients = new ArrayList<>();
-
     @JsonProperty("step_number")
     @Column(name = "step_number")
     private int stepNumber;

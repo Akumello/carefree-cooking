@@ -20,21 +20,21 @@ editButton.addEventListener('click', e => {
 
 // TODO: Clean up promise chaining
 if(recipeId) {
-    let recipeData = requestRecipeData(`http://localhost:8080/recipe/listing/${recipeId}`);
+    let recipeData = requestRecipeData(`${urls.baseUrl}/recipe/listing/${recipeId}`);
     recipeData.then(recipeFromDb => {
         // RECIPE METADATA
         const recipe = new Recipe(recipeId, recipeFromDb.name, recipeFromDb.category, recipeFromDb.version);
         recipeHeader.textContent = recipe.name;
 
         // INSTRUCTIONS
-        let steps = requestRecipeData(`http://localhost:8080/step/listing/${recipeId}`);
+        let steps = requestRecipeData(`${urls.baseUrl}/step/listing/${recipeId}`);
         steps.then(steps => {
             steps.forEach(step => 
                 addListItemToList(stepListHtml, step.instruction)
             );
 
             // INGREDIENTS
-            let ingredients = requestRecipeData(`http://localhost:8080/ingredient/listing/${recipeId}`);
+            let ingredients = requestRecipeData(`${urls.baseUrl}/ingredient/listing/${recipeId}`);
             ingredients.then(ingredients => {
                 ingredients.forEach(ingredient =>
                     addListItemToList(ingredientListHtml, ingredient.name)

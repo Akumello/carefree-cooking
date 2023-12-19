@@ -242,18 +242,21 @@ saveButton.addEventListener('click', e => {
 
     // Send request
     let recipeJSON = getRecipeJSON();
-    let resourceUrl = `http://localhost:8080/recipe/saveAll/${recipeId}`;
+    let resourceUrl = `${urls.baseUrl}/recipe/saveAll/${recipeId}`;
     let sendResult = sendRecipe(resourceUrl, recipeJSON);
 
     // Go to recipe view on success
     sendResult.then(result => {
+    console.log("ran");
         if (recipeId == '') {
-            recipeId = result.id
+            recipeId = result.id;
             window.open(urls.recipeViewerUrl + `?recipe=${recipeId}`, '_self');
         }
         else {
             window.open(urls.recipeViewerUrl + `?recipe=${recipeId}`, '_self');
         }
+    }).catch(e => {
+        console.log(e);
     });
 });
 
@@ -325,7 +328,7 @@ function getRecipeJSON() {
 if(recipeId) {
     // fetch recipe info
     // Pull recipe data from DB
-    let recipeData = requestRecipe(`http://localhost:8080/recipe/listing/${recipeId}`);
+    let recipeData = requestRecipe(`${urls.baseUrl}/recipe/listing/${recipeId}`);
     recipeData.then(recipeFromDb => {
         let recipe = new Recipe(recipeId, recipeFromDb.name, recipeFromDb.category, recipeFromDb.version);
         recipeName = recipe.name;
@@ -333,7 +336,7 @@ if(recipeId) {
         category = recipe.category;
         version = recipe.version;
 
-        let dbIntructions = requestRecipe(`http://localhost:8080/step/listing/${recipeId}`);
+        let dbIntructions = requestRecipe(`${urls.baseUrl}/step/listing/${recipeId}`);
         dbIntructions.then(dbIntructions => {
             instructionMap.clear();
             dbIntructions.forEach(dbInstrucion => {
@@ -341,7 +344,7 @@ if(recipeId) {
             });
 
             // ingredints code
-            let dbIngredients = requestRecipe(`http://localhost:8080/ingredient/listing/${recipeId}`);
+            let dbIngredients = requestRecipe(`${urls.baseUrl}/ingredient/listing/${recipeId}`);
             dbIngredients.then(dbIngredients => {
                 ingredientMap.clear();
                 dbIngredients.forEach(dbIngredient => {

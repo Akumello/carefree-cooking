@@ -20,7 +20,7 @@ recipeList.addEventListener('click', e => {
     }
     if(clickType === 'delete') {
         // Db remove request
-        let rec = deleteRecipe(`http://localhost:8080/recipe/delete/${recipeId}`);
+        let rec = deleteRecipe(`${urls.baseUrl}/recipe/delete/${recipeId}`);
 
         // Refresh after removal
         rec.finally(recipe => {
@@ -31,7 +31,7 @@ recipeList.addEventListener('click', e => {
 
 function updateList() {
     // Get full list of recipes
-    let recipeData = requestRecipes(`http://localhost:8080/recipe/listing/all`);
+    let recipeData = requestRecipes(`${urls.baseUrl}/recipe/listing/all`);
 
     // Clear current list and rebuild with latest data
     recipeData.then((recipes) => {
